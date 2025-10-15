@@ -26,26 +26,19 @@
   .quiz-image{position:relative;border:2px solid var(--navy);border-radius:8px;overflow:hidden;background:#fff}
   .quiz-image img{width:100%;height:auto;display:block}
   .options{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
-  /* ✿ Flower button ✿ */
   .option-btn{
     pointer-events:auto;
     position:absolute;
     transform:translate(-50%,-50%);
-    width:50px;height:50px;
-    background:var(--gold);
+    width:60px;height:60px;
+    background:url('Flower-removebg-preview.png') no-repeat center/contain;
     border:none;cursor:pointer;
-    clip-path:polygon(
-      50% 0%, 62% 25%, 100% 35%, 75% 58%,
-      82% 100%, 50% 80%, 18% 100%, 25% 58%,
-      0% 35%, 38% 25%
-    );
-    box-shadow:0 6px 12px rgba(0,0,0,0.2);
     transition:transform .2s,filter .2s;
   }
   .option-btn:hover{transform:translate(-50%,-50%) scale(1.08);filter:brightness(1.1)}
   .option-btn.disabled{opacity:.45;cursor:default;pointer-events:none}
-  .option-btn.correct{background:var(--ok);filter:brightness(1.1)}
-  .option-btn.wrong{background:var(--bad)}
+  .option-btn.correct{filter:drop-shadow(0 0 8px var(--ok))}
+  .option-btn.wrong{filter:drop-shadow(0 0 8px var(--bad))}
   #feedback{text-align:center;font-weight:600;margin-top:12px;min-height:24px}
   .end-area{display:none;flex-direction:column;align-items:center;margin-top:20px;gap:10px}
   .btn{background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;border:0;cursor:pointer;text-decoration:none}
@@ -85,9 +78,9 @@ const questions = [
     text:"Where do you indicate the <strong>date the COI was created?</strong>",
     image:"https://i.imgur.com/9QIBiUp.jpeg",
     options:[
-      {left:86,top:10,correct:true},   // Date (correct)
-      {left:22,top:22,correct:false},  // Producer
-      {left:50,top:42,correct:false}   // Insured
+      {left:88,top:8,correct:true},   // ✅ beside date upper right
+      {left:88,top:28,correct:false}, // ❌ 4th box right
+      {left:88,top:38,correct:false}  // ❌ 5th box right
     ]
   },
   {
@@ -96,9 +89,9 @@ const questions = [
           <strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>`,
     image:"https://i.imgur.com/9QIBiUp.jpeg",
     options:[
-      {left:22,top:22,correct:true},   // Producer (correct)
-      {left:86,top:10,correct:false},  // Date
-      {left:50,top:70,correct:false}   // bottom area
+      {left:20,top:30,correct:true},   // ✅ 3rd box left (Producer)
+      {left:20,top:38,correct:false},  // ❌ 4th box left
+      {left:88,top:38,correct:false}   // ❌ 4th box right
     ]
   }
 ];
@@ -119,7 +112,7 @@ function renderQuestion(i){
   acordImg.src=q.image;
   feedback.textContent='';
   optionsContainer.innerHTML='';
-  q.options.forEach((opt,idx)=>{
+  q.options.forEach(opt=>{
     const btn=document.createElement('button');
     btn.className='option-btn';
     btn.style.left=opt.left+'%';
