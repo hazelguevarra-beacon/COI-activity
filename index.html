@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ACORD 25 Interactive Activity</title>
+<style>
+  :root{
+    --blue:#002B7F;
+    --gold:#FFD700;
+    --card:#fff;
+    --bg:#f3f5f9;
+    --correct:#d4f8d4;
+    --wrong:#ffd6d6;
+  }
+  body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:linear-gradient(180deg,#f6f7fb,#eef2fb); color:#111;}
+  .container{max-width:1100px;margin:28px auto;padding:24px;}
+  header{display:flex;align-items:center;gap:16px;margin-bottom:18px;}
+  header h1{margin:0;font-size:20px;color:var(--blue);}
+  .card{background:var(--card);border-radius:10px;box-shadow:0 6px 18px rgba(15,30,60,0.08);padding:18px;margin-bottom:18px;}
+  .flex{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;}
+  .left,.right{flex:1 1 480px;min-width:280px;}
+  .small{font-size:13px;color:#444;margin-bottom:8px;}
+  /* STAGE 1 gallery */
+  .stage1-visual{position:relative;border-radius:8px;overflow:hidden;background:#fff;padding:12px;border:1px solid #eee;}
+  .dec-sample{width:100%;height:auto;border-radius:6px;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.02)}
+  .acord-wrap{position:relative;margin-top:12px;padding:12px;background:#fafafa;border-radius:8px;border:1px dashed #e6e9f2;}
+  .acord-img{width:100%;display:block;opacity:0.98}
+  /* hotspots (bullets) */
+  .hotspot{position:absolute;width:36px;height:36px;border-radius:50%;background:var(--blue);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(17,24,51,0.12);}
+  .hotspot.correct{background:var(--gold);color:#002B7F}
+  .hotspot.disabled{opacity:0.45;pointer-events:none}
+  .feedback{margin-top:10px;font-weight:600;}
+  .controls{display:flex;gap:10px;margin-top:12px;align-items:center;}
+  button{background:var(--blue);color:#fff;padding:10px 14px;border-radius:8px;border:0;cursor:pointer;}
+  button.secondary{background:#f1f5ff;color:var(--blue);border:1px solid #dfe8ff;}
+  button:disabled{opacity:0.5;cursor:not-allowed;}
+  /* Stage2 form */
+  form .row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  label{font-size:13px;color:#333}
+  input[type="text"], input[type="date"], textarea, select{width:100%;padding:8px 10px;border-radius:6px;border:1px solid #d7dbe9;background:#fff;}
+  textarea{min-height:80px;resize:vertical}
+  .field-error{border-color:#ff6b6b;background:var(--wrong)}
+  .field-correct{border-color:#2ab26b;background:var(--correct)}
+  .result{padding:10px;border-radius:8px;margin-top:10px;font-weight:700}
+  .result.ok{background:#e6ffea;color:#0b7a2a}
+  .result.bad{background:#ffecec;color:#9a231f}
+  .small-muted{font-size:12px;color:#666;margin-top:6px}
+  /* download area */
+  .download-area{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  footer{font-size:13px;color:#666;text-align:center;margin-top:24px}
+  @media(max-width:760px){ .left,.right{flex:1 1 100%} .hotspot{width:34px;height:34px;font-size:14px} }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="https://i.imgur.com/WdaM2l2.png" alt="logo" style="width:46px;height:46px;border-radius:6px;object-fit:cover"/>
+      <h1>ACORD 25 Interactive Training — Demo</h1>
+    </header>
+
+    <!-- Stage 1 -->
+    <div class="card" id="stage1Card">
+      <h2 style="margin-top:0">Stage 1 — Quick Placement Quiz</h2>
+      <p class="small">Look at the policy detail (DEC) image and click where that detail should be placed on the ACORD 25. 3 choices — one correct.</p>
+
+      <div class="flex">
+        <div class="left">
+          <div class="stage1-visual">
+            <div style="font-size:13px;margin-bottom:8px;color:#333">Reference: DEC Page Detail (sample)</div>
+            <!-- DEC page sample image - replace with your DEC page image -->
+            <img src="https://i.imgur.com/WdaM2l2.png" alt="dec sample" class="dec-sample">
+          </div>
+          <div class="small-muted">This sample DEC shows: <strong id="dec-detail-text">Policy Number: ABC-123456</strong></div>
+        </div>
+
+        <div class="right">
+          <div style="font-size:13px;margin-bottom:8px;color:#333">Choose the ACORD 25 location</div>
+          <div class="acord-wrap" id="acordWrap" style="height:380px">
+            <!-- ACORD background (cartoonized for demo). Replace if you have a different image -->
+            <img src="https://i.imgur.com/IZrf2yw.png" alt="acord" class="acord-img" id="acordImage">
+
+            <!-- hotspots (positioned absolutely relative to acordWrap). Change coordinates if using a different ACORD image. -->
+            <div class="hotspot" id="hs1" style="left:12%;top:18%">1</div>
+            <div class="hotspot" id="hs2" style="left:62%;top:32%">2</div>
+            <div class="hotspot" id="hs3" style="left:36%;top:64%">3</div>
+          </div>
+
+          <div class="feedback" id="s1Feedback">Selected: <span id="s1Selected">—</span></div>
+          <div class="controls">
+            <div style="display:flex;gap:8px;align-items:center">
+              <button id="s1NextBtn" class="secondary" disabled>Next Question</button>
+            </div>
+            <div style="margin-left:auto">
+              <strong>Score:</strong> <span id="stage1Score">0</span> / 1
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 2 -->
+    <div class="card" id="stage2Card" style="display:none;">
+      <h2 style="margin-top:0">Stage 2 — Fillable ACORD 25</h2>
+      <p class="small">Download the DEC page if needed. Fill the ACORD 25 fields based on the DEC page details. Submit to validate.</p>
+
+      <div class="flex">
+        <div class="left">
+          <div style="font-size:13px;margin-bottom:8px;color:#333">Download / View DEC (reference)</div>
+          <div class="card" style="padding:10px;">
+            <!-- Provide a downloadable DEC file (for demo we use the sample image). Replace link with real DEC PDF or image. -->
+            <img src="https://i.imgur.com/WdaM2l2.png" alt="dec download" style="width:100%;border-radius:6px;margin-bottom:8px">
+            <div class="download-area">
+              <a href="https://i.imgur.com/WdaM2l2.png" download target="_blank"><button class="secondary">Download DEC Image</button></a>
+              <button id="viewDecBtn" class="secondary">Open DEC in new tab</button>
+            </div>
+            <div class="small-muted">Use the DEC as your answer key for the form fields on the right.</div>
+          </div>
+
+        </div>
+
+        <div class="right">
+          <form id="acordForm">
+            <div class="row">
+              <div style="flex:1">
+                <label>Producer (Name)</label>
+                <input type="text" id="producer" placeholder="Producer name">
+              </div>
+              <div style="width:160px">
+                <label>Date</label>
+                <input type="date" id="coiDate">
+              </div>
+            </div>
+
+            <div class="row">
+              <div style="flex:1">
+                <label>Named Insured</label>
+                <input type="text" id="insured" placeholder="Insured name">
+              </div>
+            </div>
+
+            <div class="row">
+              <div style="flex:1">
+                <label>Policy Number</label>
+                <input type="text" id="policyNumber" placeholder="e.g., ABC-123456">
+              </div>
+              <div style="width:160px">
+                <label>Policy Type</label>
+                <select id="policyType">
+                  <option value="">--Select--</option>
+                  <option>Per Occurrence</option>
+                  <option>Claims-Made</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div style="flex:1">
+                <label>General Liability - Each Occurrence Limit</label>
+                <input type="text" id="glLimit" placeholder="e.g., $1,000,000">
+              </div>
+            </div>
+
+            <div class="row">
+              <div style="flex:1">
+                <label>Certificate Holder</label>
+                <input type="text" id="certificateHolder" placeholder="Certificate Holder name">
+              </div>
+            </div>
+
+            <div class="row">
+              <div style="flex:1">
+                <label>Description of Operations (if any)</label>
+                <textarea id="descOps" placeholder="Enter description here..."></textarea>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:10px;align-items:center">
+              <button type="button" id="submitFormBtn">Submit Form</button>
+              <button type="button" id="resetFormBtn" class="secondary">Reset Form</button>
+              <div style="margin-left:auto"><strong>Form Score:</strong> <span id="formScore">0</span> / 6</div>
+            </div>
+
+            <div id="formResult" style="margin-top:12px"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final / Score -->
+    <div class="card" id="finalCard" style="display:none;">
+      <h2 style="margin-top:0">Results & Download</h2>
+      <p class="small">Review your results and download a score sheet or printable report.</p>
+
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div><strong>Stage 1 Score:</strong> <span id="finalS1">0</span> / 1</div>
+        <div><strong>Stage 2 Score:</strong> <span id="finalS2">0</span> / 6</div>
+        <div><strong>Total:</strong> <span id="finalTotal">0</span> / 7</div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:10px">
+        <button id="downloadScoreBtn">Download Score Sheet</button>
+        <button id="openReportBtn" class="secondary">Open Printable Report</button>
+        <button id="restartBtn" class="secondary">Restart Activity</button>
+      </div>
+    </div>
+
+    <footer>ACORD 25 Interactive — Demo. Replace sample images and answers with real ones for production use.</footer>
+  </div>
+
+<script>
+/* ------------------------
+  Basic state + placeholder answer key (replace with real DEC answers)
+   - Stage1: correct hotspot id
+   - Stage2: answerKey object contains expected values
+-------------------------*/
+const state = {
+  stage1: { answered:false, score:0, correctHotspot: 'hs2' }, // hs2 is correct in demo
+  stage2: { score:0 },
+  answerKey: {
+    producer: 'Office Beacon Insurance',
+    date: '', // allow blank or today's date not strict in demo
+    insured: 'Office Beacon (Philippines) Inc.',
+    policyNumber: 'ABC-123456',
+    policyType: 'Per Occurrence',
+    glLimit: '$1,000,000',
+    certificateHolder: 'Client Company Ltd',
+    descOps: 'Certificate holder is an additional insured' // partial match acceptable
+  }
+};
+
+/* -------- Stage1 logic -------- */
+const hs1 = document.getElementById('hs1');
+const hs2 = document.getElementById('hs2');
+const hs3 = document.getElementById('hs3');
+const s1Feedback = document.getElementById('s1Feedback');
+const s1Selected = document.getElementById('s1Selected');
+const s1NextBtn = document.getElementById('s1NextBtn');
+const stage1ScoreEl = document.getElementById('stage1Score');
+
+[hs1,hs2,hs3].forEach(hs=>{
+  hs.addEventListener('click', ()=>{
+    if(state.stage1.answered) return;
+    state.stage1.answered = true;
+    const id = hs.id;
+    const correct = (id === state.stage1.correctHotspot);
+    // Visual feedback
+    if(correct){
+      hs.classList.add('correct');
+      s1Feedback.className = 'feedback';
+      s1Feedback.innerHTML = 'Correct! That is the right placement.';
+      state.stage1.score = 1;
+      stage1ScoreEl.textContent = state.stage1.score;
+    } else {
+      hs.classList.add('disabled');
+      s1Feedback.className = 'feedback';
+      s1Feedback.innerHTML = 'Oops — wrong answer. Try the next activity.';
+      state.stage1.score = 0;
+      stage1ScoreEl.textContent = state.stage1.score;
+      // highlight correct as hint
+      const correctEl = document.getElementById(state.stage1.correctHotspot);
+      correctEl.style.outline = '3px dashed rgba(255,215,0,0.4)';
+    }
+    s1Selected.textContent = `Choice ${id.replace('hs','')}`;
+    // enable next
+    s1NextBtn.disabled = false;
+  });
+});
+
+s1NextBtn.addEventListener('click', ()=>{
+  // Move to stage2
+  document.getElementById('stage1Card').style.display = 'none';
+  document.getElementById('stage2Card').style.display = 'block';
+});
+
+/* -------- Stage2 logic (form validation & scoring) -------- */
+
+const viewDecBtn = document.getElementById('viewDecBtn');
+viewDecBtn.addEventListener('click', ()=> {
+  window.open('https://i.imgur.com/WdaM2l2.png','_blank');
+});
+
+// utility: simple normalize for comparison
+function norm(s){
+  if(!s && s!==0) return '';
+  return String(s).trim().toLowerCase().replace(/\s+/g,' ');
+}
+
+const submitFormBtn = document.getElementById('submitFormBtn');
+const resetFormBtn = document.getElementById('resetFormBtn');
+const formScoreEl = document.getElementById('formScore');
+const formResult = document.getElementById('formResult');
+
+submitFormBtn.addEventListener('click', ()=>{
+  // gather fields
+  const fields = {
+    producer: document.getElementById('producer'),
+    date: document.getElementById('coiDate'),
+    insured: document.getElementById('insured'),
+    policyNumber: document.getElementById('policyNumber'),
+    policyType: document.getElementById('policyType'),
+    glLimit: document.getElementById('glLimit'),
+    certificateHolder: document.getElementById('certificateHolder'),
+    descOps: document.getElementById('descOps')
+  };
+
+  // score each (6 items for demo: producer, insured, policyNumber, policyType, glLimit, certificateHolder)
+  let score = 0;
+  const checks = [];
+
+  // Producer
+  if(norm(fields.producer.value) === norm(state.answerKey.producer)){
+    score++; fields.producer.classList.add('field-correct'); fields.producer.classList.remove('field-error');
+    checks.push({field:'Producer', ok:true});
+  } else {
+    fields.producer.classList.add('field-error'); fields.producer.classList.remove('field-correct');
+    checks.push({field:'Producer', ok:false, expected:state.answerKey.producer, actual:fields.producer.value});
+  }
+
+  // Insured
+  if(norm(fields.insured.value) === norm(state.answerKey.insured)){
+    score++; fields.insured.classList.add('field-correct'); fields.insured.classList.remove('field-error');
+    checks.push({field:'Insured', ok:true});
+  } else {
+    fields.insured.classList.add('field-error'); fields.insured.classList.remove('field-correct');
+    checks.push({field:'Insured', ok:false, expected:state.answerKey.insured, actual:fields.insured.value});
+  }
+
+  // Policy Number
+  if(norm(fields.policyNumber.value) === norm(state.answerKey.policyNumber)){
+    score++; fields.policyNumber.classList.add('field-correct'); fields.policyNumber.classList.remove('field-error');
+    checks.push({field:'Policy Number', ok:true});
+  } else {
+    fields.policyNumber.classList.add('field-error'); fields.policyNumber.classList.remove('field-correct');
+    checks.push({field:'Policy Number', ok:false, expected:state.answerKey.policyNumber, actual:fields.policyNumber.value});
+  }
+
+  // Policy Type
+  if(norm(fields.policyType.value) === norm(state.answerKey.policyType)){
+    score++; fields.policyType.classList.add('field-correct'); fields.policyType.classList.remove('field-error');
+    checks.push({field:'Policy Type', ok:true});
+  } else {
+    fields.policyType.classList.add('field-error'); fields.policyType.classList.remove('field-correct');
+    checks.push({field:'Policy Type', ok:false, expected:state.answerKey.policyType, actual:fields.policyType.value});
+  }
+
+  // GL Limit
+  if(norm(fields.glLimit.value) === norm(state.answerKey.glLimit)){
+    score++; fields.glLimit.classList.add('field-correct'); fields.glLimit.classList.remove('field-error');
+    checks.push({field:'GL Limit', ok:true});
+  } else {
+    fields.glLimit.classList.add('field-error'); fields.glLimit.classList.remove('field-correct');
+    checks.push({field:'GL Limit', ok:false, expected:state.answerKey.glLimit, actual:fields.glLimit.value});
+  }
+
+  // Certificate Holder
+  if(norm(fields.certificateHolder.value) === norm(state.answerKey.certificateHolder)){
+    score++; fields.certificateHolder.classList.add('field-correct'); fields.certificateHolder.classList.remove('field-error');
+    checks.push({field:'Certificate Holder', ok:true});
+  } else {
+    fields.certificateHolder.classList.add('field-error'); fields.certificateHolder.classList.remove('field-correct');
+    checks.push({field:'Certificate Holder', ok:false, expected:state.answerKey.certificateHolder, actual:fields.certificateHolder.value});
+  }
+
+  // Description - partial match ok
+  const descMatch = norm(fields.descOps.value).includes(norm(state.answerKey.descOps));
+  if(descMatch && state.answerKey.descOps){
+    fields.descOps.classList.add('field-correct'); fields.descOps.classList.remove('field-error');
+  } else {
+    fields.descOps.classList.remove('field-correct'); fields.descOps.classList.add('field-error');
+  }
+
+  state.stage2.score = score;
+  formScoreEl.textContent = score;
+  // show detailed feedback
+  const failed = checks.filter(c=>!c.ok);
+  if(failed.length===0){
+    formResult.innerHTML = `<div class="result ok">All fields match the DEC reference. Well done!</div>`;
+  } else {
+    let html = `<div class="result bad">There are ${failed.length} mismatches. See details below:</div>`;
+    html += '<ul style="margin:10px 0 0 18px">';
+    failed.forEach(f=>{
+      html += `<li><strong>${f.field}</strong> — expected: "${f.expected || '—'}", entered: "${f.actual || '—'}"</li>`;
+    });
+    html += '</ul>';
+    formResult.innerHTML = html;
+  }
+
+  // proceed to final
+  setTimeout(()=> showFinal(), 650);
+});
+
+resetFormBtn.addEventListener('click', ()=>{
+  document.getElementById('acordForm').reset();
+  // remove highlights
+  ['producer','insured','policyNumber','policyType','glLimit','certificateHolder','descOps'].forEach(id=>{
+    const el = document.getElementById(id);
+    el.classList.remove('field-error','field-correct');
+  });
+  formResult.innerHTML = '';
+  formScoreEl.textContent = '0';
+  state.stage2.score = 0;
+});
+
+/* -------- Final + downloads -------- */
+const finalCard = document.getElementById('finalCard');
+const finalS1 = document.getElementById('finalS1');
+const finalS2 = document.getElementById('finalS2');
+const finalTotal = document.getElementById('finalTotal');
+
+function showFinal(){
+  // hide stage2 and display final
+  document.getElementById('stage2Card').style.display = 'none';
+  finalCard.style.display = 'block';
+  // populate
+  finalS1.textContent = state.stage1.score;
+  finalS2.textContent = state.stage2.score;
+  finalTotal.textContent = state.stage1.score + state.stage2.score;
+}
+
+// Download score sheet as simple text file
+document.getElementById('downloadScoreBtn').addEventListener('click', ()=>{
+  const total = state.stage1.score + state.stage2.score;
+  const lines = [];
+  lines.push('ACORD 25 Interactive Activity - Score Sheet');
+  lines.push('Date: '+ new Date().toLocaleString());
+  lines.push('');
+  lines.push(`Stage 1 (Placement Quiz): ${state.stage1.score} / 1`);
+  lines.push(`Stage 2 (Form Fill): ${state.stage2.score} / 6`);
+  lines.push(`Total: ${total} / 7`);
+  lines.push('');
+  lines.push('Notes: Replace sample DEC with authentic DEC for production use.');
+  const blob = new Blob([lines.join('\n')], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `ACORD25_Score_${Date.now()}.txt`;
+  document.body.appendChild(a); a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+// Printable report opens a new window with formatted HTML
+document.getElementById('openReportBtn').addEventListener('click', ()=>{
+  const total = state.stage1.score + state.stage2.score;
+  const html = `
+  <html><head><title>ACORD25 Report</title>
+  <style>body{font-family:Arial,Helvetica,sans-serif;padding:24px;color:#1b2230} h1{color:${'#002B7F'}} .box{border:1px solid #e6e9f2;padding:16px;border-radius:8px;margin-top:12px}</style>
+  </head><body>
+  <h1>ACORD 25 Activity Report</h1>
+  <div class="box">
+    <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+    <p><strong>Stage 1 (Placement Quiz):</strong> ${state.stage1.score} / 1</p>
+    <p><strong>Stage 2 (Form Fill):</strong> ${state.stage2.score} / 6</p>
+    <p><strong>Total Score:</strong> ${total} / 7</p>
+  </div>
+  <p>Use the browser print dialog to save as PDF or print the report.</p>
+  </body></html>`;
+  const r = window.open('','_blank','width=800,height=700');
+  r.document.write(html);
+  r.document.close();
+});
+
+// Restart fresh
+document.getElementById('restartBtn').addEventListener('click', ()=>{
+  location.reload();
+});
+
+/* Optional: prefill demo answerKey values into DEC text (to reflect what user should copy) */
+document.getElementById('dec-detail-text').textContent = 'Policy Number: ' + state.answerKey.policyNumber + '  •  Insured: ' + state.answerKey.insured;
+
+/* End of script */
+</script>
+</body>
+</html>
