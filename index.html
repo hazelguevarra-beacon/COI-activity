@@ -67,7 +67,7 @@
   }
 
   .option:hover {
-    transform: scale(1.15);
+    transform: scale(1.2);
   }
 
   .disabled {
@@ -132,20 +132,22 @@ const questions = [
     title: "Question 1",
     text: "Where are you going to indicate the <strong>date you created your COI?</strong>",
     image: "https://i.imgur.com/9QIBiUp.jpeg",
+    // placed near words: DATE ✅, PRODUCER ❌, INSURED ❌
     options: [
-      { top: 30, left: 680, correct: true },   // DATE (upper right)
-      { top: 190, left: 650, correct: false }, // 4th box right
-      { top: 255, left: 650, correct: false }  // 5th box right
+      { top: 35, left: 650, correct: true },   // beside DATE box (top-right)
+      { top: 95, left: 90, correct: false },   // beside PRODUCER label (top-left)
+      { top: 200, left: 90, correct: false }   // beside INSURED label (left side)
     ]
   },
   {
     title: "Question 2",
     text: "Look at the details below and select which part of the ACORD should contain them:<br><strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>",
     image: "https://i.imgur.com/9QIBiUp.jpeg",
+    // placed near words: PRODUCER ✅, INSURED ❌, CONTACT ❌
     options: [
-      { top: 150, left: 100, correct: true },  // ✅ 3rd box left
-      { top: 200, left: 100, correct: false }, // ❌ 4th box left
-      { top: 200, left: 650, correct: false }  // ❌ 4th box right
+      { top: 95, left: 90, correct: true },    // beside PRODUCER (left)
+      { top: 200, left: 90, correct: false },  // beside INSURED (left)
+      { top: 280, left: 650, correct: false }  // beside CONTACT info (right)
     ]
   }
 ];
