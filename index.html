@@ -52,19 +52,43 @@
       border-radius: 10px;
     }
 
+    /* 🌼 Flower buttons */
     .option {
       position: absolute;
-      width: 30px;
-      height: 30px;
-      background-color: #ffcc00;
+      width: 35px;
+      height: 35px;
+      background: radial-gradient(circle at center, #ffcc00 60%, #e6b800 100%);
       border: 2px solid #002b5b;
       border-radius: 50%;
       cursor: pointer;
-      transition: transform 0.2s;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .option::before,
+    .option::after {
+      content: "";
+      position: absolute;
+      width: 35px;
+      height: 35px;
+      background: radial-gradient(circle at center, #ffcc00 60%, #e6b800 100%);
+      border-radius: 50%;
+    }
+
+    .option::before {
+      transform: rotate(45deg);
+    }
+
+    .option::after {
+      transform: rotate(-45deg);
     }
 
     .option:hover {
       transform: scale(1.1);
+      box-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
     }
 
     #feedback {
@@ -118,14 +142,12 @@
     <img id="quiz-image" src="https://i.imgur.com/9QIBiUp.jpeg" alt="ACORD 25 Form" />
 
     <!-- Question 1 options -->
-    <div class="option" id="q1a1" style="top: 40px; right: 120px;" onclick="checkAnswer(true, this)"></div>
-    <div class="option" id="q1a2" style="top: 150px; left: 200px;" onclick="checkAnswer(false, this)"></div>
-    <div class="option" id="q1a3" style="bottom: 100px; left: 300px;" onclick="checkAnswer(false, this)"></div>
+    <div class="option" style="top: 50px; right: 110px;" onclick="checkAnswer(true, this)"></div> <!-- Correct -->
+    <div class="option" style="top: 200px; left: 250px;" onclick="checkAnswer(false, this)"></div>
+    <div class="option" style="bottom: 130px; left: 350px;" onclick="checkAnswer(false, this)"></div>
   </div>
 
   <div id="feedback"></div>
-
-  <button id="next-btn" onclick="nextQuestion()">Next Question</button>
 
   <div class="footer">
     <p>© 2025 Office Beacon | Training Module</p>
@@ -143,7 +165,7 @@
       const feedback = document.getElementById("feedback");
       const options = document.querySelectorAll(".option");
 
-      options.forEach(opt => opt.style.pointerEvents = "none"); // disable all buttons
+      options.forEach(opt => opt.style.pointerEvents = "none"); // disable further clicks
 
       if (isCorrect) {
         feedback.textContent = "✅ Correct!";
@@ -154,6 +176,52 @@
         feedback.className = "wrong";
       }
 
-      // Show next button after a short delay
-      setTimeout(() => {
-        nextQuestion();
+      setTimeout(() => nextQuestion(), 1500);
+    }
+
+    function nextQuestion() {
+      const feedback = document.getElementById("feedback");
+      const quizStage = document.getElementById("quiz-stage");
+      const title = document.getElementById("question-title");
+      const text = document.getElementById("question-text");
+
+      feedback.textContent = "";
+      answered = false;
+
+      if (currentQuestion === 1) {
+        // Load Question 2
+        currentQuestion = 2;
+        title.textContent = "Question 2";
+        text.innerHTML =
+          `Review the details below and select where they should appear on the ACORD form:<br>
+           <strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>`;
+
+        quizStage.innerHTML = `
+          <img id="quiz-image" src="https://i.imgur.com/9QIBiUp.jpeg" alt="ACORD 25 Form" />
+          <!-- Correct: Producer section -->
+          <div class="option" style="top: 100px; left: 150px;" onclick="checkAnswer(true, this)"></div>
+          <div class="option" style="top: 60px; right: 100px;" onclick="checkAnswer(false, this)"></div>
+          <div class="option" style="bottom: 120px; left: 400px;" onclick="checkAnswer(false, this)"></div>
+        `;
+      } else {
+        // End of quiz
+        document.body.innerHTML = `
+          <header>
+            <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo" />
+            <h2>Office Beacon Training - ACORD 25 Interactive Quiz</h2>
+          </header>
+          <div style="text-align:center; padding:40px;">
+            <h1>🎉 Great work!</h1>
+            <p>Your score: <strong>${score}/2</strong></p>
+            <p>Click below to download the next activity (Dec Page & Fillable ACORD 25 form).</p>
+            <a href="https://i.imgur.com/uHPFlpi.jpeg" download class="btn" style="background:#002b5b;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;">⬇️ Download Dec Page</a>
+          </div>
+          <div class="footer">
+            <p>© 2025 Office Beacon | Training Module</p>
+          </div>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>
