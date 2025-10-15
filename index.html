@@ -13,201 +13,149 @@
     --bad:#d9534f;
   }
   body{
-    margin:0;font-family:Inter, "Segoe UI", Arial, Helvetica, sans-serif;
-    background:var(--bg); color:var(--navy); display:flex;flex-direction:column;align-items:center;
+    margin:0;font-family:"Segoe UI",Inter,Arial,sans-serif;
+    background:var(--bg);color:var(--navy);
+    display:flex;flex-direction:column;align-items:center;
   }
-  header{width:100%;background:var(--navy);color:#fff;display:flex;align-items:center;gap:12px;padding:12px 20px}
-  header img{height:46px;border-radius:6px}
-  main{max-width:980px;width:100%;padding:20px}
-  h1{color:var(--gold);text-align:center;margin:18px 0 6px}
+  header{width:100%;background:var(--navy);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 20px}
+  header img{height:44px;border-radius:6px}
+  main{max-width:960px;width:100%;padding:20px}
+  h1{text-align:center;color:var(--gold);margin:12px 0 6px}
   p.lead{text-align:center;margin:6px 0 18px;color:#123}
-  .quiz-wrap{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
-  .quiz-card{background:#fff;border-radius:10px;padding:14px;box-shadow:0 8px 20px rgba(10,20,40,0.06);width:820px}
+  .quiz-card{background:#fff;border-radius:10px;padding:16px;box-shadow:0 6px 20px rgba(0,0,0,0.08)}
   .quiz-image{position:relative;border:2px solid var(--navy);border-radius:8px;overflow:hidden;background:#fff}
-  .quiz-image img{display:block;width:100%;height:auto;max-width:800px}
-  /* Flower button (uses emoji for simplicity) */
+  .quiz-image img{width:100%;height:auto;display:block}
   .options{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+  /* ✿ Flower button ✿ */
   .option-btn{
     pointer-events:auto;
     position:absolute;
     transform:translate(-50%,-50%);
-    width:40px;height:40px;border-radius:50%;
-    border:3px solid var(--navy);
-    background:linear-gradient(180deg,var(--gold), #e6b800);
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;font-size:18px;box-shadow:0 6px 14px rgba(0,0,0,0.12);
-    transition:transform .15s, box-shadow .15s, opacity .15s;
+    width:50px;height:50px;
+    background:var(--gold);
+    border:none;cursor:pointer;
+    clip-path:polygon(
+      50% 0%, 62% 25%, 100% 35%, 75% 58%,
+      82% 100%, 50% 80%, 18% 100%, 25% 58%,
+      0% 35%, 38% 25%
+    );
+    box-shadow:0 6px 12px rgba(0,0,0,0.2);
+    transition:transform .2s,filter .2s;
   }
-  .option-btn:focus{outline:3px solid rgba(0,43,91,0.12)}
-  .option-btn:hover{transform:translate(-50%,-50%) scale(1.08)}
+  .option-btn:hover{transform:translate(-50%,-50%) scale(1.08);filter:brightness(1.1)}
   .option-btn.disabled{opacity:.45;cursor:default;pointer-events:none}
-  .option-btn.correct{border-color:rgba(0,0,0,0.06);box-shadow:0 6px 18px rgba(46,164,79,0.18)}
-  .option-btn.wrong{box-shadow:0 6px 18px rgba(217,83,79,0.18)}
-  #feedback{margin-top:14px;font-weight:700;text-align:center;min-height:28px}
-  .footer{margin-top:16px;text-align:center;color:#666;font-size:13px}
-  .download-area{display:flex;gap:8px;justify-content:center;margin-top:14px}
-  .btn{background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;border:0;cursor:pointer}
-  .btn.secondary{background:#fff;color:var(--navy);border:1px solid #dfe8ff}
-  /* small responsive */
-  @media(max-width:860px){
-    .quiz-card{width:94%}
-    .option-btn{width:36px;height:36px;font-size:16px}
-  }
+  .option-btn.correct{background:var(--ok);filter:brightness(1.1)}
+  .option-btn.wrong{background:var(--bad)}
+  #feedback{text-align:center;font-weight:600;margin-top:12px;min-height:24px}
+  .end-area{display:none;flex-direction:column;align-items:center;margin-top:20px;gap:10px}
+  .btn{background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;border:0;cursor:pointer;text-decoration:none}
 </style>
 </head>
 <body>
-  <header>
-    <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon logo">
-    <div><strong>Office Beacon Training</strong><div style="font-size:13px;margin-top:2px">ACORD 25 Interactive Quiz</div></div>
-  </header>
+<header>
+  <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo">
+  <div>
+    <strong>Office Beacon Training</strong><br>
+    <small>ACORD 25 Interactive Quiz</small>
+  </div>
+</header>
 
-  <main>
-    <h1 id="qTitle">Question 1</h1>
-    <p class="lead" id="qText">Where are you going to indicate the <strong>date you created your COI?</strong></p>
+<main>
+  <h1 id="qTitle"></h1>
+  <p class="lead" id="qText"></p>
 
-    <div class="quiz-wrap">
-      <div class="quiz-card">
-        <div class="quiz-image" id="imageBox">
-          <!-- ACORD background -->
-          <img id="acordImg" src="https://i.imgur.com/9QIBiUp.jpeg" alt="ACORD 25 form">
-          <!-- options container: buttons will be injected here -->
-          <div class="options" id="optionsContainer" aria-hidden="false"></div>
-        </div>
-
-        <div id="feedback" aria-live="polite"></div>
-      </div>
+  <div class="quiz-card">
+    <div class="quiz-image">
+      <img id="acordImg" src="" alt="ACORD form">
+      <div class="options" id="optionsContainer"></div>
     </div>
+    <div id="feedback"></div>
+  </div>
 
-    <div class="download-area" id="endArea" style="display:none">
-      <div><strong>Score:</strong> <span id="scoreDisplay">0</span>/2</div>
-      <a id="downloadDec" href="https://i.imgur.com/uHPFlpi.jpeg" download class="btn" style="text-decoration:none">⬇️ Download DEC Page</a>
-    </div>
-
-    <div class="footer">© 2025 Office Beacon</div>
-  </main>
+  <div class="end-area" id="endArea">
+    <div><strong>Score:</strong> <span id="scoreDisplay">0</span>/2</div>
+    <a id="downloadDec" href="https://i.imgur.com/uHPFlpi.jpeg" download class="btn">⬇️ Download DEC Page</a>
+  </div>
+</main>
 
 <script>
-/* QUESTIONS config:
-   each question
-   - image (we reuse same ACORD image)
-   - text
-   - options: array of { leftPercent, topPercent, correct:boolean }
-   leftPercent/topPercent are positions relative to image container (0-100)
-*/
 const questions = [
   {
-    title: 'Question 1',
-    text: 'Where are you going to indicate the <strong>date you created your COI?</strong>',
-    image: 'https://i.imgur.com/9QIBiUp.jpeg',
-    options: [
-      { left: 86, top: 10, correct: true },   // top-right DATE area (correct)
-      { left: 30, top: 35, correct: false },  // decoy
-      { left: 42, top: 78, correct: false }   // decoy
+    title:"Question 1",
+    text:"Where do you indicate the <strong>date the COI was created?</strong>",
+    image:"https://i.imgur.com/9QIBiUp.jpeg",
+    options:[
+      {left:86,top:10,correct:true},   // Date (correct)
+      {left:22,top:22,correct:false},  // Producer
+      {left:50,top:42,correct:false}   // Insured
     ]
   },
   {
-    title: 'Question 2',
-    text: 'Review the details below and select where they should appear on the ACORD form:<br><strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>',
-    image: 'https://i.imgur.com/9QIBiUp.jpeg',
-    options: [
-      { left: 20, top: 22, correct: true },   // Producer block (correct)
-      { left: 85, top: 12, correct: false },  // decoy near date
-      { left: 55, top: 65, correct: false }   // decoy lower area
+    title:"Question 2",
+    text:`Look at the details below and select which part of the ACORD should contain them:<br>
+          <strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>`,
+    image:"https://i.imgur.com/9QIBiUp.jpeg",
+    options:[
+      {left:22,top:22,correct:true},   // Producer (correct)
+      {left:86,top:10,correct:false},  // Date
+      {left:50,top:70,correct:false}   // bottom area
     ]
   }
 ];
 
-let current = 0;
-let score = 0;
-const optionsContainer = document.getElementById('optionsContainer');
-const acordImg = document.getElementById('acordImg');
-const qTitle = document.getElementById('qTitle');
-const qText = document.getElementById('qText');
-const feedback = document.getElementById('feedback');
-const endArea = document.getElementById('endArea');
-const scoreDisplay = document.getElementById('scoreDisplay');
+let current=0, score=0;
+const qTitle=document.getElementById('qTitle');
+const qText=document.getElementById('qText');
+const acordImg=document.getElementById('acordImg');
+const optionsContainer=document.getElementById('optionsContainer');
+const feedback=document.getElementById('feedback');
+const endArea=document.getElementById('endArea');
+const scoreDisplay=document.getElementById('scoreDisplay');
 
-function renderQuestion(index){
-  const q = questions[index];
-  qTitle.textContent = q.title;
-  qText.innerHTML = q.text;
-  acordImg.src = q.image;
-  feedback.textContent = '';
-  optionsContainer.innerHTML = ''; // clear previous
-
-  // create buttons
-  q.options.forEach((opt, i)=>{
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.setAttribute('aria-label', `Option ${i+1}`);
-    btn.dataset.correct = opt.correct ? '1' : '0';
-    btn.innerText = '🌼';
-    // position absolute using percent relative to container
-    // we need offset after image loads to place correctly; position will use percentages via CSS left/top
-    btn.style.left = opt.left + '%';
-    btn.style.top = opt.top + '%';
-    btn.style.transform = 'translate(-50%,-50%)';
-    // append
+function renderQuestion(i){
+  const q=questions[i];
+  qTitle.textContent=q.title;
+  qText.innerHTML=q.text;
+  acordImg.src=q.image;
+  feedback.textContent='';
+  optionsContainer.innerHTML='';
+  q.options.forEach((opt,idx)=>{
+    const btn=document.createElement('button');
+    btn.className='option-btn';
+    btn.style.left=opt.left+'%';
+    btn.style.top=opt.top+'%';
+    btn.dataset.correct=opt.correct?'1':'0';
+    btn.addEventListener('click',onClick);
     optionsContainer.appendChild(btn);
-
-    // attach handler
-    btn.addEventListener('click', onOptionClick);
   });
-
-  // ensure options container accepts pointer events
-  optionsContainer.style.pointerEvents = 'auto';
 }
 
-// click handler
-function onOptionClick(e){
-  const btn = e.currentTarget;
-  // prevent double clicks
-  if(btn.classList.contains('disabled')) return;
-
-  // disable all options
-  const all = optionsContainer.querySelectorAll('.option-btn');
-  all.forEach(x=> {
-    x.classList.add('disabled');
-    x.disabled = true;
-  });
-
-  const isCorrect = btn.dataset.correct === '1';
-  if(isCorrect){
-    btn.classList.add('correct');
-    feedback.textContent = '✅ Correct!';
-    feedback.style.color = '';
-    score++;
-  } else {
+function onClick(e){
+  const btn=e.currentTarget;
+  const all=document.querySelectorAll('.option-btn');
+  all.forEach(b=>{b.disabled=true;b.classList.add('disabled');});
+  const correct=btn.dataset.correct==='1';
+  if(correct){btn.classList.add('correct');feedback.textContent='✅ Correct!';score++;}
+  else{
     btn.classList.add('wrong');
-    feedback.textContent = '❌ Oops — wrong answer.';
-    feedback.style.color = '';
-    // highlight correct one as hint
-    const correctBtn = optionsContainer.querySelector('[data-correct="1"]');
-    if(correctBtn) correctBtn.classList.add('correct');
+    feedback.textContent='❌ Wrong answer.';
+    const right=document.querySelector('.option-btn[data-correct="1"]');
+    if(right) right.classList.add('correct');
   }
-
-  // update score display only at end
-  // auto-advance after delay
   setTimeout(()=>{
     current++;
-    if(current < questions.length){
-      renderQuestion(current);
-    } else {
-      finishQuiz();
-    }
-  }, 1400);
+    if(current<questions.length) renderQuestion(current);
+    else finish();
+  },1400);
 }
 
-function finishQuiz(){
-  // hide quiz UI and show download/score area
-  document.querySelector('.quiz-card').style.display = 'none';
-  endArea.style.display = 'flex';
-  scoreDisplay.textContent = score;
-  // scroll to end area
+function finish(){
+  document.querySelector('.quiz-card').style.display='none';
+  endArea.style.display='flex';
+  scoreDisplay.textContent=score;
   endArea.scrollIntoView({behavior:'smooth'});
 }
 
-// initial render
 renderQuestion(0);
 </script>
 </body>
