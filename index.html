@@ -1,161 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ACORD 25 Interactive Quiz + COI Activity</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ACORD 25 Interactive Quiz - Complete</title>
 <style>
-  :root{
-    --navy:#002b5b; --gold:#ffcc00; --ok:#2ea44f; --bad:#d9534f;
+  :root {
+    --navy: #002b5b;
+    --gold: #ffcc00;
+    --ok: #2ea44f;
+    --bad: #d9534f;
   }
-  /* Restore Part 1 gradient styling exactly as in your latest Part1 code */
-  body{margin:0;font-family:"Segoe UI",sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;
-    background:linear-gradient(135deg,#002b5b 0%,#0056b3 40%,#ffcc00 100%);color:var(--navy)}
-  body::before{content:"";position:fixed;inset:0;background:rgba(255,255,255,0.36);backdrop-filter:blur(2px);z-index:-1}
-  header{width:100%;background:rgba(0,43,91,0.9);color:#fff;display:flex;align-items:center;padding:10px 20px}
-  header img{height:45px;margin-right:12px}
-  h1{color:var(--gold);margin-top:20px;text-shadow:1px 1px 2px rgba(0,0,0,0.2)}
-  main{max-width:980px;width:100%;padding:20px;box-sizing:border-box}
-  /* Quiz card (Part 1) - use the exact sizes from your last working version */
-  .quiz{position:relative;display:inline-block;margin-top:10px;border:2px solid var(--navy);border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 4px 15px rgba(0,0,0,0.25)}
-  .quiz img{width:650px;display:block}
-  .option{position:absolute;width:25px;height:25px;background:url("https://i.imgur.com/goJQm2I.png") no-repeat center/contain;cursor:pointer;transition:transform .2s}
-  .option:hover{transform:scale(1.15)}
-  .disabled{pointer-events:none;opacity:0.7}
-  #feedback{font-size:1.2rem;font-weight:bold;margin-top:15px;text-align:center}
-  .correct{color:var(--ok)} .wrong{color:var(--bad)}
-  /* Part2 container (kept simple, clean) */
-  .part2{display:none;margin-top:18px;background:#fff;padding:18px;border-radius:10px;border:2px solid rgba(0,0,0,0.06);box-shadow:0 6px 18px rgba(0,0,0,0.08);max-width:980px}
-  label{display:block;margin-top:10px;font-weight:600}
-  input[type="text"], input[type="email"], textarea{width:100%;padding:8px;border:1px solid #ddd;border-radius:6px;margin-top:6px;box-sizing:border-box}
-  textarea{min-height:80px}
-  .small{font-size:0.9rem}
-  .btn{background:var(--navy);color:#fff;padding:10px 14px;border-radius:8px;border:0;cursor:pointer;margin-top:12px}
-  .btn.secondary{background:#fff;color:var(--navy);border:1px solid #dfe8ff}
-  /* overlay area using exact width of background PNG (650px) */
-  .overlay-wrapper{position:relative;width:650px;margin-top:12px;border:1px solid #eee}
-  .overlay-wrapper img{display:block;width:100%}
-  .ov-input,.ov-textarea{position:absolute;background:rgba(255,255,255,0.98);border:1px solid #cfcfcf;padding:6px 8px;border-radius:4px;font-size:0.95rem;box-sizing:border-box}
-  .ov-textarea{resize:none}
-  .ov-checkbox{position:absolute;transform:scale(1.05)}
-  .result-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:6px;margin-top:8px}
-  .result-row.ok{background:#eaf7ec;border:1px solid #c6efcf}
-  .result-row.bad{background:#fdecea;border:1px solid #f5c6c4}
-  .certificate{width:700px;border:6px solid var(--navy);padding:18px;background:#fff;margin-top:16px;border-radius:8px;text-align:center}
-  .logo{height:60px}
-  .hidden{display:none}
-  a.next{background:var(--navy);color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;display:inline-block}
-  footer{margin:24px 0;color:#fff}
+
+  body {
+    font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #002b5b 0%, #0056b3 40%, #ffcc00 100%);
+    background-attachment: fixed;
+    color: var(--navy);
+  }
+
+  /* Overlay for readability */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(2px);
+    z-index: -1;
+  }
+
+  header {
+    background: rgba(0, 43, 91, 0.9);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  header img {
+    height: 45px;
+    margin-right: 10px;
+  }
+
+  h1 {
+    color: var(--gold);
+    margin-top: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  }
+
+  .quiz {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+    border: 2px solid var(--navy);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  }
+
+  .quiz img {
+    width: 650px;
+    display: block;
+  }
+
+  .option {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: url("https://i.imgur.com/goJQm2I.png") no-repeat center/contain;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .option:hover {
+    transform: scale(1.2);
+  }
+
+  .disabled {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  #feedback {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 15px;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.7);
+  }
+
+  .correct {
+    color: var(--ok);
+  }
+
+  .wrong {
+    color: var(--bad);
+  }
+
+  #end {
+    display: none;
+    text-align: center;
+    margin-top: 25px;
+    background: rgba(255,255,255,0.8);
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  a.next {
+    background: var(--navy);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+
+  a.next:hover {
+    background: #004080;
+  }
 </style>
 </head>
 <body>
-<header>
-  <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo">
-  <div style="color:white;margin-left:10px"><strong>Office Beacon Training</strong><div style="font-size:13px">ACORD 25 Interactive</div></div>
-</header>
+  <header>
+    <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo" />
+    <h3>Office Beacon Training - ACORD 25 Interactive Quiz</h3>
+  </header>
 
-<main>
-  <!-- PART 1: exact working quiz (gradient/last version) -->
-  <section id="part1">
-    <h1 id="qTitle"></h1>
-    <p id="qText"></p>
+  <h1 id="qTitle"></h1>
+  <p id="qText"></p>
 
-    <div class="quiz" id="quizCard">
-      <img id="qImage" src="" alt="ACORD Form">
-      <div id="options" style="position:relative"></div>
-    </div>
+  <div class="quiz">
+    <img id="qImage" src="" alt="ACORD Form">
+    <div id="options"></div>
+  </div>
 
-    <div id="feedback"></div>
+  <div id="feedback"></div>
 
-    <div id="end" style="margin-top:12px; display:none;">
-      <h3>Activity Complete!</h3>
-      <p>Your total score: <span id="score">0</span>/10</p>
-      <a id="toPart2" class="next" href="#">➡️ Proceed to the Next Activity</a>
-    </div>
-  </section>
-
-  <!-- PART 2: clean overlay fillable form using acord_fillable_page0.png -->
-  <section id="part2" class="part2">
-    <h2>COI Creation Activity</h2>
-    <p class="small">Enter your name and email, download the Dec Page for reference, then fill the form fields overlaid on the image.</p>
-
-    <label for="traineeName">Your name</label>
-    <input id="traineeName" type="text" placeholder="Full name">
-
-    <label for="traineeEmail">Email address</label>
-    <input id="traineeEmail" type="email" placeholder="you@example.com">
-
-    <div style="margin-top:12px;padding:10px;border:1px dashed #ddd;border-radius:6px;background:#fafafa">
-      <strong>Instruction</strong>
-      <p id="instructionText" style="margin:6px 0">
-        Hi <span id="previewName">Trainee</span>,<br>
-        Kindly create a <strong>Certificate of Insurance (COI)</strong> for <strong>Joe Sample</strong>'s policy and list <strong>Gruber Services</strong> as an Additional Insured.<br>
-        Gruber Services<br>13 Crystal Lake Rd.<br>Friday, CT 58679
-      </p>
-      <a href="https://i.imgur.com/uHPFlpi.jpeg" target="_blank" class="small">⬇️ Download Dec Page</a>
-    </div>
-
-    <!-- overlay wrapper (use the exact PNG you uploaded) -->
-    <div class="overlay-wrapper" id="acordOverlay">
-      <img src="acord_fillable_page0.png" alt="ACORD form background">
-
-      <!-- Inputs carefully sized and placed (uniform sizes, no overlap) -->
-      <!-- Date (top-right) -->
-      <input id="ov_date" class="ov-input" style="top:28px; left:510px; width:120px;" placeholder="MM/DD/YYYY">
-
-      <!-- Producer block -->
-      <textarea id="ov_producer" class="ov-textarea" style="top:100px; left:18px; width:310px; height:68px;" placeholder="Producer name & address"></textarea>
-
-      <!-- Insured block -->
-      <textarea id="ov_insured" class="ov-textarea" style="top:190px; left:18px; width:310px; height:68px;" placeholder="Insured name & address"></textarea>
-
-      <!-- Insurer A -->
-      <input id="ov_insurerA" class="ov-input" style="top:60px; left:320px; width:200px;" placeholder="Insurer A">
-
-      <!-- NAIC # -->
-      <input id="ov_naic" class="ov-input" style="top:60px; left:530px; width:95px;" placeholder="NAIC #">
-
-      <!-- Policy Number + Policy Eff + Policy Exp (same row) -->
-      <input id="ov_policyNumber" class="ov-input" style="top:128px; left:260px; width:190px;" placeholder="Policy Number">
-      <input id="ov_policyEff" class="ov-input" style="top:128px; left:470px; width:110px;" placeholder="Policy Eff">
-      <input id="ov_policyExp" class="ov-input" style="top:128px; left:585px; width:110px;" placeholder="Policy Exp">
-
-      <!-- Type of Insurance checkbox (Scheduled Auto) -->
-      <input id="ov_typeAuto" type="checkbox" class="ov-checkbox" style="top:92px; left:78px;">
-      <div style="position:absolute; top:92px; left:108px; font-size:0.9rem;">Scheduled Auto (Automobile Liability)</div>
-
-      <!-- Limits (Automobile Liability) -->
-      <input id="ov_limit_csl" class="ov-input" style="top:160px; left:550px; width:78px;" placeholder="CSL">
-      <input id="ov_limit_bi_p" class="ov-input" style="top:190px; left:550px; width:78px;" placeholder="BI per person">
-      <input id="ov_limit_bi_a" class="ov-input" style="top:220px; left:550px; width:78px;" placeholder="BI per accident">
-      <input id="ov_limit_pd" class="ov-input" style="top:250px; left:550px; width:78px;" placeholder="PD">
-
-      <!-- Description of operations -->
-      <textarea id="ov_description" class="ov-textarea" style="top:315px; left:150px; width:472px; height:110px;" placeholder="Description of operations"></textarea>
-
-      <!-- Certificate Holder -->
-      <textarea id="ov_certHolder" class="ov-textarea" style="top:450px; left:18px; width:380px; height:100px;" placeholder="Certificate Holder name & address"></textarea>
-    </div>
-
-    <div style="margin-top:12px;">
-      <button id="finishBtn" class="btn">Finish & Grade</button>
-      <button id="resetPart2" class="btn secondary">Reset</button>
-    </div>
-
-    <div id="gradeResults" style="margin-top:12px; display:none;"></div>
-    <div id="postActions" style="margin-top:12px; display:none;"></div>
-    <div id="certificateWrap" style="margin-top:14px; display:none;"></div>
-  </section>
-
-</main>
-
-<footer>
-  <small style="color:#fff">© Office Beacon</small>
-</footer>
+  <div id="end">
+    <h2>Activity Complete!</h2>
+    <p>Your total score: <span id="score">0</span>/10</p>
+    <!-- ✅ Only this line changed -->
+    <a class="next" href="activity2.html">➡️ Proceed to the Next Activity</a>
+  </div>
 
 <script>
-/* ------------------ PART 1: EXACT quiz code from your last working version ------------------ */
-const part1Questions = [
+const questions = [
   {
     title: "Question 1",
     text: "Where are you going to indicate the <strong>date you created your COI?</strong>",
@@ -208,7 +206,7 @@ const part1Questions = [
   },
   {
     title: "Question 6",
-    text: "Where should you enter this detail: <strong>1234567890</strong>?",
+    text: "Where should you enter this detail: <strong>0B2AA5688</strong>?",
     image: "https://i.imgur.com/YPwppvo.jpeg",
     options: [
       { top: 120, left: 258, correct: true },
@@ -270,7 +268,7 @@ const end = document.getElementById("end");
 const scoreEl = document.getElementById("score");
 
 function loadQuestion() {
-  const q = part1Questions[current];
+  const q = questions[current];
   qTitle.textContent = q.title;
   qText.innerHTML = q.text;
   qImage.src = q.image;
@@ -301,207 +299,22 @@ function checkAnswer(btn, isCorrect) {
 
   setTimeout(() => {
     current++;
-    if (current < part1Questions.length) {
+    if (current < questions.length) {
       loadQuestion();
     } else {
-      finishPart1();
+      showEnd();
     }
-  }, 1200);
+  }, 1500);
 }
 
-function finishPart1() {
-  document.getElementById("quizCard").style.display = "none";
+function showEnd() {
+  document.querySelector(".quiz").style.display = "none";
   feedback.style.display = "none";
   end.style.display = "block";
   scoreEl.textContent = score;
 }
 
 loadQuestion();
-
-/* proceed to Part 2 when clicking Next Activity (no page reload) */
-document.getElementById("toPart2").addEventListener("click", (e) => {
-  e.preventDefault();
-  document.getElementById("part1").style.display = "none";
-  document.getElementById("part2").style.display = "block";
-
-  // prefill today's date
-  const today = new Date();
-  const mm = String(today.getMonth()+1).padStart(2,'0');
-  const dd = String(today.getDate()).padStart(2,'0');
-  const yyyy = today.getFullYear();
-  document.getElementById("ov_date").value = mm + '/' + dd + '/' + yyyy;
-});
-
-/* ---------- PART 2: overlay fillable logic & grading ---------- */
-
-/* preview trainee name */
-const previewName = document.getElementById("previewName");
-document.getElementById("traineeName").addEventListener("input", e=>{
-  previewName.textContent = e.target.value || 'Trainee';
-});
-
-/* answer key */
-const answerKey = {
-  date: null,
-  producerInclude: ['Conjuring Agency','Annabelle','Valak'],
-  insuredInclude: ['Joe','Sample','Cityville'],
-  insurerA: 'Fake Company',
-  naicAny: true,
-  typeAuto: true,
-  policyNumber: '1234567890',
-  policyEff: '09/31/2008',
-  policyExp: '09/31/2009',
-  limits: { csl: 300000, bi_p: 100000, bi_a: 100000, pd: 50000 },
-  descriptionMustInclude: ['Gruber Services','Additional Insured','written contract'],
-  certHolderInclude: ['Gruber Services','Crystal Lake']
-};
-(function setDateKey(){
-  const t = new Date(); const mm = String(t.getMonth()+1).padStart(2,'0'); const dd = String(t.getDate()).padStart(2,'0'); const yyyy = t.getFullYear();
-  answerKey.date = mm + '/' + dd + '/' + yyyy;
-})();
-
-function normalize(s){ return (s||'').toString().toLowerCase(); }
-
-/* Finish & Grade */
-document.getElementById("finishBtn").addEventListener("click", async ()=>{
-  const name = (document.getElementById("traineeName").value||'').trim();
-  const email = (document.getElementById("traineeEmail").value||'').trim();
-  if(!name || !email){ alert('Please enter name and email before finishing.'); return; }
-
-  const user = {
-    date: (document.getElementById("ov_date").value||'').trim(),
-    producer: (document.getElementById("ov_producer").value||'').trim(),
-    insured: (document.getElementById("ov_insured").value||'').trim(),
-    insurerA: (document.getElementById("ov_insurerA").value||'').trim(),
-    naic: (document.getElementById("ov_naic").value||'').trim(),
-    typeAuto: document.getElementById("ov_typeAuto").checked,
-    policyNumber: (document.getElementById("ov_policyNumber").value||'').trim(),
-    policyEff: (document.getElementById("ov_policyEff").value||'').trim(),
-    policyExp: (document.getElementById("ov_policyExp").value||'').trim(),
-    limit_csl: Number((document.getElementById("ov_limit_csl").value||'').toString().replace(/[^0-9]/g,'')) || 0,
-    limit_bi_p: Number((document.getElementById("ov_limit_bi_p").value||'').toString().replace(/[^0-9]/g,'')) || 0,
-    limit_bi_a: Number((document.getElementById("ov_limit_bi_a").value||'').toString().replace(/[^0-9]/g,'')) || 0,
-    limit_pd: Number((document.getElementById("ov_limit_pd").value||'').toString().replace(/[^0-9]/g,'')) || 0,
-    description: (document.getElementById("ov_description").value||'').trim(),
-    certHolder: (document.getElementById("ov_certHolder").value||'').trim()
-  };
-
-  const results = [];
-  // date
-  results.push({ label:'Date', ok: normalize(user.date) === normalize(answerKey.date), entered:user.date, expected:answerKey.date });
-  // producer
-  { const low = normalize(user.producer); const ok = answerKey.producerInclude.every(t=>low.includes(t.toLowerCase())); results.push({ label:'Producer', ok, entered:user.producer, expected:'Conjuring Agency / 1313 Annabelle St. Valak Connecticut 58679' }); }
-  // insured
-  { const low = normalize(user.insured); const ok = answerKey.insuredInclude.every(t=>low.includes(t.toLowerCase())); results.push({ label:'Insured', ok, entered:user.insured, expected:'Joe Sample / 567 fake St. Cityville, NJ 02345' }); }
-  // insurerA
-  { const ok = normalize(user.insurerA).includes(normalize(answerKey.insurerA)); results.push({ label:'Insurer A', ok, entered:user.insurerA, expected:answerKey.insurerA }); }
-  // NAIC (accepted)
-  results.push({ label:'NAIC #', ok:true, entered:user.naic, expected:'Any (accepted)' });
-  // typeAuto
-  results.push({ label:'Type of Insurance (Scheduled Auto)', ok: !!user.typeAuto, entered:user.typeAuto ? 'Checked' : 'Not checked', expected:'Checked' });
-  // policy number
-  results.push({ label:'Policy Number', ok: normalize(user.policyNumber) === normalize(answerKey.policyNumber), entered:user.policyNumber, expected:answerKey.policyNumber });
-  // policy eff/exp
-  results.push({ label:'Policy Effective', ok: normalize(user.policyEff) === normalize(answerKey.policyEff), entered:user.policyEff, expected:answerKey.policyEff });
-  results.push({ label:'Policy Expiration', ok: normalize(user.policyExp) === normalize(answerKey.policyExp), entered:user.policyExp, expected:answerKey.policyExp });
-  // limits (4)
-  results.push({ label:'Limits — Combined Single Limit', ok: Number(user.limit_csl) === Number(answerKey.limits.csl), entered:user.limit_csl, expected:answerKey.limits.csl });
-  results.push({ label:'Limits — Bodily Injury (Per person)', ok: Number(user.limit_bi_p) === Number(answerKey.limits.bi_p), entered:user.limit_bi_p, expected:answerKey.limits.bi_p });
-  results.push({ label:'Limits — Bodily Injury (Per accident)', ok: Number(user.limit_bi_a) === Number(answerKey.limits.bi_a), entered:user.limit_bi_a, expected:answerKey.limits.bi_a });
-  results.push({ label:'Limits — Property Damage', ok: Number(user.limit_pd) === Number(answerKey.limits.pd), entered:user.limit_pd, expected:answerKey.limits.pd });
-  // description
-  { const low = normalize(user.description); const ok = answerKey.descriptionMustInclude.every(t=>low.includes(t.toLowerCase())); results.push({ label:'Description of Operations', ok, entered:user.description, expected: answerKey.descriptionMustInclude.join(' / ') }); }
-  // cert holder
-  { const low = normalize(user.certHolder); const ok = answerKey.certHolderInclude.every(t=>low.includes(t.toLowerCase())); results.push({ label:'Certificate Holder', ok, entered:user.certHolder, expected:'Gruber Services / 13 Crystal Lake Rd. Friday, CT 58679' }); }
-
-  // compute
-  const totalChecks = results.length; // 15
-  const correctCount = results.filter(r=>r.ok).length;
-  const percent = Math.round((correctCount/totalChecks)*100);
-
-  // show results
-  const out = document.getElementById("gradeResults");
-  out.innerHTML = "<h3>Results</h3>";
-  results.forEach(r=>{
-    const div = document.createElement("div");
-    div.className = "result-row " + (r.ok ? "ok" : "bad");
-    div.innerHTML = `<div style="max-width:70%"><strong>${r.label}</strong><div style="font-size:0.9rem;color:#333">${r.entered || '<em>empty</em>'}</div></div>
-                     <div style="text-align:right">${r.ok ? '✅ Correct' : '❌ Incorrect'}<div style="font-size:0.85rem;color:#666;margin-top:6px">Expected: <strong style="color:#222">${r.expected}</strong></div></div>`;
-    out.appendChild(div);
-  });
-  const summary = document.createElement("div");
-  summary.style.marginTop = "12px";
-  summary.innerHTML = `<strong>Total:</strong> ${correctCount}/${totalChecks} — <strong>${percent}%</strong>`;
-  out.appendChild(summary);
-  out.style.display = "block";
-
-  // post actions (sheet, certificate)
-  const post = document.getElementById("postActions");
-  post.innerHTML = "";
-  post.style.display = "block";
-  const passing = percent >= 95; // requires near-perfect
-
-  if(passing){
-    const p = document.createElement("div"); p.innerHTML = `<p style="color:${getComputedStyle(document.documentElement).getPropertyValue('--ok')}"><strong>Congratulations — you passed!</strong></p>`;
-    const submitBtn = document.createElement("button"); submitBtn.className="btn"; submitBtn.textContent="Submit & Receive Certificate";
-    submitBtn.onclick = async ()=>{
-      const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxmI1ACi68fih9YwgDOJj6nZ1Tv9vjgZb0bRsoF-ISlKDXc7zQzHvTt5LxpfjmfdzdM/exec';
-      const payload = { name, email, score: percent, activity: 'ACORD 25 - COI Creation Activity', course: 'COI' };
-      submitBtn.disabled = true; submitBtn.textContent = 'Submitting...';
-      try{
-        await fetch(SHEET_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-        submitBtn.textContent = 'Submitted ✓';
-        showCertificate(name, percent);
-      }catch(err){
-        submitBtn.disabled = false; submitBtn.textContent = 'Submit & Receive Certificate';
-        alert('Submission failed — please try again. ' + (err.message||err));
-      }
-    };
-    post.appendChild(p); post.appendChild(submitBtn);
-  } else {
-    const p = document.createElement("div"); p.innerHTML = `<p style="color:${getComputedStyle(document.documentElement).getPropertyValue('--bad')}"><strong>Thank you! Please try again.</strong></p>`;
-    const retry = document.createElement("button"); retry.className="btn secondary"; retry.textContent="Retry Activity"; retry.onclick = ()=>{ resetPart2Form(); };
-    post.appendChild(p); post.appendChild(retry);
-    // optional record attempt
-    const recordNote = document.createElement("div"); recordNote.style.marginTop='8px';
-    recordNote.innerHTML = `<small>If you want to record this attempt to the course activity sheet, click below.</small>`;
-    const recordBtn = document.createElement("button"); recordBtn.className='btn'; recordBtn.textContent='Record Attempt';
-    recordBtn.onclick = async ()=>{
-      const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxmI1ACi68fih9YwgDOJj6nZ1Tv9vjgZb0bRsoF-ISlKDXc7zQzHvTt5LxpfjmfdzdM/exec';
-      const payload = { name, email, score: percent, activity:'ACORD 25 - COI Creation Activity', course:'COI' };
-      try{ await fetch(SHEET_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); recordBtn.textContent='Recorded ✓'; recordBtn.disabled=true; }catch(e){ alert('Record failed: '+e.message); }
-    };
-    post.appendChild(recordNote); post.appendChild(recordBtn);
-  }
-});
-
-/* reset function */
-function resetPart2Form(){
-  document.querySelectorAll('#part2 input, #part2 textarea').forEach(el=>{
-    if(el.type==='checkbox') el.checked=false; else el.value='';
-  });
-  const today=new Date(), mm=String(today.getMonth()+1).padStart(2,'0'), dd=String(today.getDate()).padStart(2,'0');
-  document.getElementById("ov_date").value = mm + '/' + dd + '/' + today.getFullYear();
-  document.getElementById("gradeResults").style.display='none';
-  document.getElementById("postActions").style.display='none';
-  document.getElementById("certificateWrap").style.display='none';
-}
-document.getElementById("resetPart2").addEventListener("click", resetPart2Form);
-
-/* certificate */
-function showCertificate(name, percent){
-  document.getElementById("certificateWrap").style.display='block';
-  const wrap = document.getElementById("certificateWrap");
-  wrap.innerHTML = '';
-  const cert = document.createElement('div'); cert.className='certificate';
-  const t=new Date(); const mm=String(t.getMonth()+1).padStart(2,'0'); const dd=String(t.getDate()).padStart(2,'0'); const yyyy=t.getFullYear();
-  cert.innerHTML = `<img src="https://i.imgur.com/d2BCvGL.png" class="logo" alt="Office Beacon"><h2>Certificate of Completion</h2><p>This certifies that</p><h3>${escapeHtml(name)}</h3><p>has successfully passed the <strong>ACORD 25 - COI Creation Activity</strong> with a score of <strong>${percent}%</strong>.</p><p class="small">Date: ${mm}/${dd}/${yyyy}</p><div style="margin-top:12px;"><button class="btn" onclick="window.print()">Print / Save as PDF</button></div>`;
-  wrap.appendChild(cert);
-}
-
-/* helper escape */
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
 </script>
 </body>
 </html>
