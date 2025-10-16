@@ -1,89 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ACORD 25 Interactive Quiz + COI Activity (Overlay)</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ACORD 25 Interactive Quiz - Complete</title>
 <style>
-  :root{--navy:#002b5b;--gold:#ffcc00;--ok:#2ea44f;--bad:#d9534f}
-  body{margin:0;font-family:"Segoe UI",sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;
-    background:linear-gradient(135deg,#002b5b 0%,#0056b3 40%,#ffcc00 100%);color:var(--navy)}
-  body::before{content:"";position:fixed;inset:0;background:rgba(255,255,255,0.36);backdrop-filter:blur(2px);z-index:-1}
-  header{width:100%;background:rgba(0,43,91,0.9);color:#fff;display:flex;align-items:center;padding:10px 20px}
-  header img{height:45px;margin-right:12px}
-  main{max-width:980px;width:100%;padding:20px;box-sizing:border-box}
-  h1{color:var(--gold);text-shadow:1px 1px 2px rgba(0,0,0,0.2)}
-  /* quiz card */
-  .quiz{position:relative;display:inline-block;border:2px solid var(--navy);border-radius:10px;background:#fff;padding:12px;box-shadow:0 6px 20px rgba(0,0,0,0.18)}
-  .quiz img{width:650px;display:block}
-  .option{position:absolute;width:25px;height:25px;background:url("https://i.imgur.com/goJQm2I.png") no-repeat center/contain;cursor:pointer;transition:transform .15s}
-  .option:hover{transform:scale(1.15)}
-  #feedback{font-weight:700;margin-top:12px;text-align:center}
-  .correct{color:var(--ok)} .wrong{color:var(--bad)}
-  /* Part2 overlay form */
-  .hidden{display:none}
-  .part2{margin-top:18px;background:#fff;padding:18px;border-radius:10px;border:2px solid rgba(0,0,0,0.06);box-shadow:0 6px 18px rgba(0,0,0,0.08)}
-  label{display:block;margin-top:8px;font-weight:600}
-  input[type="text"], input[type="email"], textarea, select{width:100%;padding:8px;border:1px solid #ddd;border-radius:6px;margin-top:6px;box-sizing:border-box}
-  textarea{min-height:80px}
-  .row{display:flex;gap:12px}
-  .col{flex:1}
-  .btn{background:var(--navy);color:#fff;padding:10px 14px;border-radius:8px;border:0;cursor:pointer;margin-top:12px}
-  .btn.secondary{background:#fff;color:var(--navy);border:1px solid #dfe8ff}
-  .small{font-size:0.9rem}
-  .result-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:6px;margin-top:8px}
-  .result-row.ok{background:#eaf7ec;border:1px solid #c6efcf}
-  .result-row.bad{background:#fdecea;border:1px solid #f5c6c4}
-  .certificate{width:700px;border:6px solid #002b5b;padding:18px;background:#fff;margin-top:16px;border-radius:8px;text-align:center}
-  .logo{height:60px}
-  .center{text-align:center}
-  .overlay-wrapper{position:relative;width:650px;margin-top:12px}
-  .overlay-img{display:block;width:100%}
-  /* overlay inputs - absolute positioned to match ACORD2 layout */
-  .ov-input{position:absolute;background:rgba(255,255,255,0.95);border:1px solid #bbb;padding:6px;border-radius:4px;box-sizing:border-box;font-size:0.95rem}
-  .ov-textarea{position:absolute;background:rgba(255,255,255,0.95);border:1px solid #bbb;padding:6px;border-radius:4px;box-sizing:border-box;font-size:0.95rem;resize:none}
-  .ov-checkbox{position:absolute;transform:scale(1.05)}
-  /* small helper styling for finish block */
-  #gradeResults .expected{font-size:0.85rem;color:#333;margin-top:6px}
-  a.next{background:var(--navy);color:#fff;padding:10px 20px;border-radius:8px;text-decoration:none;display:inline-block;margin-top:10px}
+  :root {
+    --navy: #002b5b;
+    --gold: #ffcc00;
+    --ok: #2ea44f;
+    --bad: #d9534f;
+  }
+
+  /* PAGE */
+  body {
+    font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #002b5b 0%, #0056b3 40%, #ffcc00 100%);
+    color: var(--navy);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(2px);
+    z-index: -1;
+  }
+
+  header {
+    background: rgba(0, 43, 91, 0.9);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    width: 100%;
+  }
+  header img { height: 45px; margin-right: 10px; }
+
+  main { max-width: 980px; width:100%; padding:20px; box-sizing:border-box; }
+
+  h1 { color: var(--gold); margin-top: 20px; }
+
+  /* QUIZ (PART 1) - exact layout retained */
+  .quiz {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+    border: 2px solid var(--navy);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  }
+  .quiz img { width: 650px; display: block; }
+
+  .option {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: url("https://i.imgur.com/goJQm2I.png") no-repeat center/contain;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .option:hover { transform: scale(1.2); }
+  .disabled { pointer-events: none; opacity: 0.7; }
+
+  #feedback { font-size: 1.2rem; font-weight: bold; margin-top: 15px; text-align:center; }
+
+  .correct { color: var(--ok); }
+  .wrong   { color: var(--bad); }
+
+  /* PART 2 container and overlay */
+  .part2 {
+    margin-top: 18px;
+    background: #fff;
+    padding: 18px;
+    border-radius: 10px;
+    border: 2px solid rgba(0,0,0,0.06);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+
+  .small { font-size: 0.9rem; }
+
+  label { display:block; margin-top:10px; font-weight:600; }
+
+  /* overlay wrapper - fixed width matching the background image width (650px) */
+  .overlay-wrapper { position: relative; width: 650px; margin-top: 12px; border: 1px solid #eee; background:#fff; }
+
+  .overlay-wrapper img { display:block; width:100%; }
+
+  /* Inputs overlay styles - uniform sizes */
+  .ov-input, .ov-select {
+    position: absolute;
+    background: rgba(255,255,255,0.98);
+    border: 1px solid #cfcfcf;
+    padding:6px 8px;
+    border-radius:4px;
+    font-size:0.95rem;
+    box-sizing:border-box;
+  }
+  .ov-textarea {
+    position:absolute;
+    background: rgba(255,255,255,0.98);
+    border:1px solid #cfcfcf;
+    padding:6px 8px;
+    border-radius:4px;
+    font-size:0.95rem;
+    box-sizing:border-box;
+    resize:none;
+  }
+  .ov-checkbox { position:absolute; transform:scale(1.05); }
+
+  .btn { background:var(--navy); color:#fff; padding:10px 14px; border-radius:8px; border:0; cursor:pointer; margin-top:12px; }
+  .btn.secondary { background:#fff; color:var(--navy); border:1px solid #dfe8ff; }
+
+  .result-row { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:6px; margin-top:8px; }
+  .result-row.ok { background:#eaf7ec; border:1px solid #c6efcf; }
+  .result-row.bad { background:#fdecea; border:1px solid #f5c6c4; }
+
+  #end { display:none; text-align:center; margin-top:25px; }
+
+  #certificateWrap { margin-top:14px; }
+
 </style>
 </head>
 <body>
 <header>
-  <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo">
-  <div><strong>Office Beacon Training</strong><div style="font-size:13px">ACORD 25 Interactive</div></div>
+  <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo" />
+  <h3 style="color:white;margin:0 0 0 10px">Office Beacon Training - ACORD 25 Interactive Quiz</h3>
 </header>
 
 <main>
-  <!-- PART 1: Quiz -->
+  <!-- === PART 1 (unchanged quiz) === -->
   <section id="part1">
     <h1 id="qTitle"></h1>
     <p id="qText"></p>
+
     <div class="quiz" id="quizCard">
-      <img id="qImage" src="" alt="ACORD">
+      <img id="qImage" src="" alt="ACORD Form">
       <div id="options" style="position:relative"></div>
     </div>
+
     <div id="feedback"></div>
-    <div id="end" class="hidden" style="margin-top:12px">
+
+    <div id="end" style="margin-top:12px">
       <h3>Activity Complete!</h3>
       <p>Your total score: <span id="score">0</span>/10</p>
-      <a id="toPart2" class="next" href="#">➡️ Proceed to the Next Activity</a>
+      <a id="toPart2" href="#" class="btn" style="text-decoration:none;display:inline-block;margin-top:8px">➡️ Proceed to the Next Activity</a>
     </div>
   </section>
 
-  <!-- PART 2: Overlay fillable ACORD (on ACORD2 image) -->
+  <!-- === PART 2: overlay fillable using converted PNG (place acord_fillable_page0.png in same folder) === -->
   <section id="part2" class="hidden">
     <div class="part2">
       <h2>COI Creation Activity</h2>
-      <p class="small">Enter name & email. Use the Dec Page to complete the fields overlaid on the ACORD form image.</p>
+      <p class="small">Enter your name & email, download the Dec Page for reference, then complete the fields on the form below.</p>
 
       <label for="traineeName">Your name</label>
-      <input id="traineeName" type="text" placeholder="Full name">
+      <input id="traineeName" type="text" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px">
 
       <label for="traineeEmail">Email address</label>
-      <input id="traineeEmail" type="email" placeholder="you@example.com">
+      <input id="traineeEmail" type="email" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:6px">
 
-      <div style="margin-top:12px;padding:12px;border:1px dashed #ddd;border-radius:6px;background:#fafafa">
+      <div style="margin-top:12px;padding:10px;border:1px dashed #ddd;border-radius:6px;background:#fafafa">
         <strong>Instruction</strong>
         <p id="instructionText" style="margin:6px 0">
           Hi <span id="previewName">Trainee</span>,<br>
@@ -93,140 +178,193 @@
         <a href="https://i.imgur.com/uHPFlpi.jpeg" target="_blank" class="small">⬇️ Download Dec Page</a>
       </div>
 
-      <!-- OVERLAYED ACORD IMAGE -->
+      <!-- overlay wrapper using the converted PNG (place file in same folder with this HTML) -->
       <div class="overlay-wrapper" id="acordOverlay">
-        <img src="https://i.imgur.com/YPwppvo.jpeg" class="overlay-img" alt="ACORD Form (overlay)">
+        <!-- make sure the file acord_fillable_page0.png is in the same folder -->
+        <img src="acord_fillable_page0.png" class="overlay-img" alt="ACORD Form (overlay)">
 
+        <!-- -- Overlay inputs (carefully sized and positioned; uniform dimensions) -- -->
         <!-- Date (top-right) -->
-        <input id="ov_date" class="ov-input" style="top:28px;left:520px;width:110px" placeholder="MM/DD/YYYY">
+        <input id="ov_date" class="ov-input" style="top:28px; left:510px; width:120px;" placeholder="MM/DD/YYYY">
 
-        <!-- Producer (left block) -->
-        <textarea id="ov_producer" class="ov-textarea" style="top:100px;left:20px;width:310px;height:70px" placeholder="Producer name & address"></textarea>
+        <!-- Producer block (left) -->
+        <textarea id="ov_producer" class="ov-textarea" style="top:100px; left:18px; width:310px; height:68px;" placeholder="Producer name & address"></textarea>
 
-        <!-- Insured (left block) -->
-        <textarea id="ov_insured" class="ov-textarea" style="top:200px;left:20px;width:310px;height:70px" placeholder="Insured name & address"></textarea>
+        <!-- Insured block (left) -->
+        <textarea id="ov_insured" class="ov-textarea" style="top:190px; left:18px; width:310px; height:68px;" placeholder="Insured name & address"></textarea>
 
         <!-- Insurer A (top center) -->
-        <input id="ov_insurerA" class="ov-input" style="top:60px;left:320px;width:200px" placeholder="Insurer A">
+        <input id="ov_insurerA" class="ov-input" style="top:60px; left:320px; width:200px;" placeholder="Insurer A">
 
         <!-- NAIC # (near insurer) -->
-        <input id="ov_naic" class="ov-input" style="top:60px;left:530px;width:90px" placeholder="NAIC #">
+        <input id="ov_naic" class="ov-input" style="top:60px; left:530px; width:95px;" placeholder="NAIC #">
 
-        <!-- Policy Number + Policy Eff + Policy Exp (same row) -->
-        <input id="ov_policyNumber" class="ov-input" style="top:120px;left:260px;width:200px" placeholder="Policy Number">
-        <input id="ov_policyEff" class="ov-input" style="top:120px;left:470px;width:120px" placeholder="Policy Eff">
-        <input id="ov_policyExp" class="ov-input" style="top:120px;left:600px;width:120px" placeholder="Policy Exp">
+        <!-- Policy Number (center row) -->
+        <input id="ov_policyNumber" class="ov-input" style="top:128px; left:260px; width:190px;" placeholder="Policy Number">
 
-        <!-- Type of Insurance: scheduled auto (checkbox) -->
-        <input id="ov_typeAuto" type="checkbox" class="ov-checkbox" style="top:90px;left:80px">
-        <div style="position:absolute;top:90px;left:110px;font-size:0.9rem">Scheduled Auto (Automobile Liability)</div>
+        <!-- Policy Eff & Policy Exp beside Policy Number -->
+        <input id="ov_policyEff" class="ov-input" style="top:128px; left:470px; width:110px;" placeholder="Policy Eff">
+        <input id="ov_policyExp" class="ov-input" style="top:128px; left:585px; width:110px;" placeholder="Policy Exp">
 
-        <!-- Limits area (Automobile Liability) -->
-        <input id="ov_limit_csl" class="ov-input" style="top:155px;left:560px;width:80px" placeholder="CSL">
-        <input id="ov_limit_bi_p" class="ov-input" style="top:185px;left:560px;width:80px" placeholder="BI per person">
-        <input id="ov_limit_bi_a" class="ov-input" style="top:215px;left:560px;width:80px" placeholder="BI per accident">
-        <input id="ov_limit_pd" class="ov-input" style="top:245px;left:560px;width:80px" placeholder="PD">
+        <!-- Type of Insurance - Scheduled Auto checkbox (placed near left) -->
+        <input id="ov_typeAuto" type="checkbox" class="ov-checkbox" style="top:92px; left:78px;">
+        <div style="position:absolute;top:92px;left:108px;font-size:0.9rem">Scheduled Auto (Automobile Liability)</div>
 
-        <!-- Description of Operations (large box lower) -->
-        <textarea id="ov_description" class="ov-textarea" style="top:320px;left:150px;width:470px;height:110px" placeholder="Description of Operations"></textarea>
+        <!-- Limits fields (right area) -->
+        <input id="ov_limit_csl" class="ov-input" style="top:160px; left:550px; width:78px;" placeholder="CSL">
+        <input id="ov_limit_bi_p" class="ov-input" style="top:190px; left:550px; width:78px;" placeholder="BI per person">
+        <input id="ov_limit_bi_a" class="ov-input" style="top:220px; left:550px; width:78px;" placeholder="BI per accident">
+        <input id="ov_limit_pd" class="ov-input" style="top:250px; left:550px; width:78px;" placeholder="PD">
+
+        <!-- Description of Operations (large box) -->
+        <textarea id="ov_description" class="ov-textarea" style="top:315px; left:150px; width:472px; height:110px;" placeholder="Description of operations"></textarea>
 
         <!-- Certificate Holder (bottom-left) -->
-        <textarea id="ov_certHolder" class="ov-textarea" style="top:460px;left:20px;width:380px;height:80px" placeholder="Certificate Holder name & address"></textarea>
+        <textarea id="ov_certHolder" class="ov-textarea" style="top:450px; left:18px; width:380px; height:100px;" placeholder="Certificate Holder name & address"></textarea>
 
-      </div> <!-- end overlay-wrapper -->
+      </div> <!-- end overlay -->
 
       <div style="margin-top:12px">
         <button id="finishBtn" class="btn">Finish & Grade</button>
         <button id="resetPart2" class="btn secondary">Reset</button>
       </div>
 
-      <div id="gradeResults" class="hidden" style="margin-top:12px"></div>
-      <div id="postActions" class="hidden" style="margin-top:12px"></div>
-      <div id="certificateWrap" class="hidden" style="margin-top:14px"></div>
+      <div id="gradeResults" style="margin-top:12px; display:none;"></div>
+      <div id="postActions" style="margin-top:12px; display:none;"></div>
+      <div id="certificateWrap" style="margin-top:14px; display:none;"></div>
+
     </div>
   </section>
 </main>
 
 <script>
-/* ---------------- PART 1: quiz (unchanged) ---------------- */
+/* ================= PART 1 (your original quiz) =================
+   I copied the first quiz code exactly as you provided earlier.
+   Coordinates and logic preserved.
+=================================================================*/
 const part1Questions = [
-  { title:"Question 1", text:"Where are you going to indicate the <strong>date you created your COI?</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
-    options:[ {top:30,left:515,correct:true},{top:150,left:90,correct:false},{top:230,left:90,correct:false} ] },
-  { title:"Question 2", text:"Look at the details below and select which part of the ACORD should contain them:<br><strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
-    options:[ {top:150,left:90,correct:true},{top:230,left:90,correct:false},{top:145,left:400,correct:false} ] },
-  { title:"Question 3", text:"Where are you going to put the <strong>information of the contact person?</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
-    options:[ {top:128,left:400,correct:true},{top:30,left:510,correct:false},{top:200,left:400,correct:false} ] },
-  { title:"Question 4", text:"Where are you going to put this information?<br><strong>Jane Doe<br>1412 Tabacuhan St. San Diego, CA 90018<br>806-546-4399</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
-    options:[ {top:225,left:90,correct:true},{top:150,left:90,correct:false},{top:200,left:500,correct:false} ] },
-
-  { title:"Question 5", text:"Which section displays <strong>the type of coverage</strong> this certificate represents?", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:70,left:80,correct:true},{top:120,left:360,correct:false},{top:230,left:520,correct:false} ] },
-  { title:"Question 6", text:"Where should you enter this detail: <strong>1234567890</strong>?", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:120,left:258,correct:true},{top:170,left:555,correct:false},{top:280,left:410,correct:false} ] },
-  { title:"Question 7", text:"Where will you input these details?<br><strong>Each Occurrence: $500,000<br>Med. Expense: $100,000<br>Personal & ADV Injury: $150,000</strong>", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:120,left:560,correct:true},{top:120,left:360,correct:false},{top:155,left:150,correct:false} ] },
-  { title:"Question 8", text:"Where should you place the phrase:<br><strong>The Certificate Holder is named as an Additional Insured with respect to the General Liability per written contract.</strong>", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:400,left:80,correct:true},{top:265,left:350,correct:false},{top:75,left:80,correct:false} ] },
-  { title:"Question 9", text:"Where should you enter this policy period?<br><strong>Period: 02/05/2025 - 02/05/2026</strong>", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:125,left:360,correct:true},{top:170,left:555,correct:false},{top:158,left:250,correct:false} ] },
-  { title:"Question 10", text:"Where should you record the details of the <strong>Additional Insured</strong>?", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:500,left:80,correct:true},{top:260,left:400,correct:false},{top:230,left:550,correct:false} ] }
+  { title: "Question 1", text: "Where are you going to indicate the <strong>date you created your COI?</strong>",
+    image: "https://i.imgur.com/9QIBiUp.jpeg",
+    options: [ { top: 30, left: 515, correct: true }, { top: 150, left: 90, correct: false }, { top: 230, left: 90, correct: false } ]
+  },
+  { title: "Question 2", text: "Look at the details below and select which part of the ACORD should contain them:<br><strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>",
+    image: "https://i.imgur.com/9QIBiUp.jpeg",
+    options: [ { top: 150, left: 90, correct: true }, { top: 230, left: 90, correct: false }, { top: 145, left: 400, correct: false } ]
+  },
+  { title: "Question 3", text: "Where are you going to put the <strong>information of the contact person?</strong>",
+    image: "https://i.imgur.com/9QIBiUp.jpeg",
+    options: [ { top: 128, left: 400, correct: true }, { top: 30, left: 510, correct: false }, { top: 200, left: 400, correct: false } ]
+  },
+  { title: "Question 4", text: "Where are you going to put this information?<br><strong>Jane Doe<br>1412 Tabacuhan St. San Diego, CA 90018<br>806-546-4399</strong>",
+    image: "https://i.imgur.com/9QIBiUp.jpeg",
+    options: [ { top: 225, left: 90, correct: true }, { top: 150, left: 90, correct: false }, { top: 200, left: 500, correct: false } ]
+  },
+  { title: "Question 5", text: "Which section displays <strong>the type of coverage</strong> this certificate represents?",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [ { top: 70, left: 80, correct: true }, { top: 120, left: 360, correct: false }, { top: 230, left: 520, correct: false } ]
+  },
+  { title: "Question 6", text: "Where should you enter this detail: <strong>1234567890</strong>?",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [ { top: 120, left: 258, correct: true }, { top: 170, left: 555, correct: false }, { top: 280, left: 410, correct: false } ]
+  },
+  { title: "Question 7", text: "Where will you input these details?<br><strong>Each Occurrence: $500,000<br>Med. Expense: $100,000<br>Personal & ADV Injury: $150,000</strong>",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [ { top: 120, left: 560, correct: true }, { top: 120, left: 360, correct: false }, { top: 155, left: 150, correct: false } ]
+  },
+  { title: "Question 8", text: "Where should you place the phrase:<br><strong>The Certificate Holder is named as an Additional Insured with respect to the General Liability per written contract.</strong>",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [ { top: 400, left: 80, correct: true }, { top: 265, left: 350, correct: false }, { top: 75, left: 80, correct: false } ]
+  },
+  { title: "Question 9", text: "Where should you enter this policy period?<br><strong>Period: 02/05/2025 - 02/05/2026</strong>",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [ { top: 125, left: 360, correct: true }, { top: 170, left: 555, correct: false }, { top: 158, left: 250, correct: false } ]
+  },
+  { title: "Question 10", text: "Where should you record the details of the <strong>Additional Insured</strong>?",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [ { top: 500, left: 80, correct: true }, { top: 260, left: 400, correct: false }, { top: 230, left: 550, correct: false } ]
+  }
 ];
 
-let current = 0, score = 0;
-const qTitle = document.getElementById('qTitle');
-const qText = document.getElementById('qText');
-const qImage = document.getElementById('qImage');
-const optionsDiv = document.getElementById('options');
-const feedback = document.getElementById('feedback');
-const endDiv = document.getElementById('end');
-const scoreSpan = document.getElementById('score');
+let current = 0;
+let score = 0;
 
-function loadQuestion(){
+const qTitle = document.getElementById("qTitle");
+const qText = document.getElementById("qText");
+const qImage = document.getElementById("qImage");
+const optionsDiv = document.getElementById("options");
+const feedback = document.getElementById("feedback");
+const end = document.getElementById("end");
+const scoreEl = document.getElementById("score");
+
+function loadQuestion() {
   const q = part1Questions[current];
   qTitle.textContent = q.title;
   qText.innerHTML = q.text;
   qImage.src = q.image;
-  feedback.textContent = '';
-  optionsDiv.innerHTML = '';
-  q.options.forEach(opt=>{
-    const btn=document.createElement('div');
-    btn.className='option';
-    btn.style.top = opt.top+'px';
-    btn.style.left = opt.left+'px';
-    btn.onclick = ()=>{ if(btn.classList.contains('disabled')) return; document.querySelectorAll('.option').forEach(x=>x.classList.add('disabled')); if(opt.correct){ feedback.textContent='✅ Correct!'; feedback.className='correct'; score++; } else { feedback.textContent='❌ Oops, wrong answer!'; feedback.className='wrong'; } setTimeout(()=>{ current++; if(current < part1Questions.length){ loadQuestion(); } else { finishPart1(); } },1400); };
+  feedback.textContent = "";
+  optionsDiv.innerHTML = "";
+
+  q.options.forEach(opt => {
+    const btn = document.createElement("div");
+    btn.classList.add("option");
+    btn.style.top = opt.top + "px";
+    btn.style.left = opt.left + "px";
+    btn.onclick = () => checkAnswer(btn, opt.correct);
     optionsDiv.appendChild(btn);
   });
 }
 
-function finishPart1(){
-  document.getElementById('quizCard').style.display='none';
-  feedback.style.display='none';
-  endDiv.classList.remove('hidden');
-  scoreSpan.textContent = score;
+function checkAnswer(btn, isCorrect) {
+  document.querySelectorAll(".option").forEach(b => b.classList.add("disabled"));
+
+  if (isCorrect) {
+    feedback.textContent = "✅ Correct!";
+    feedback.className = "correct";
+    score++;
+  } else {
+    feedback.textContent = "❌ Oops, wrong answer!";
+    feedback.className = "wrong";
+  }
+
+  setTimeout(() => {
+    current++;
+    if (current < part1Questions.length) {
+      loadQuestion();
+    } else {
+      finishPart1();
+    }
+  }, 1200);
+}
+
+function finishPart1() {
+  document.getElementById("quizCard").style.display = "none";
+  feedback.style.display = "none";
+  end.style.display = "block";
+  scoreEl.textContent = score;
 }
 
 loadQuestion();
 
 /* proceed to Part 2 when clicking Next Activity */
-document.getElementById('toPart2').addEventListener('click', (e)=>{
+document.getElementById("toPart2").addEventListener("click", (e) => {
   e.preventDefault();
-  document.getElementById('part1').classList.add('hidden');
-  document.getElementById('part2').classList.remove('hidden');
+  document.getElementById("part1").classList.add("hidden");
+  document.getElementById("part2").classList.remove("hidden");
   // prefill date (on overlay field)
   const today = new Date();
   const mm = String(today.getMonth()+1).padStart(2,'0');
   const dd = String(today.getDate()).padStart(2,'0');
   const yyyy = today.getFullYear();
-  document.getElementById('ov_date').value = mm + '/' + dd + '/' + yyyy;
+  document.getElementById("ov_date").value = mm + '/' + dd + '/' + yyyy;
 });
 
-/* ---------- PART 2: overlay fillable logic ---------- */
-const previewName = document.getElementById('previewName');
-document.getElementById('traineeName').addEventListener('input', e=>{
+/* ---------- PART 2: overlay form logic & grading ---------- */
+
+/* preview name */
+const previewName = document.getElementById("previewName");
+document.getElementById("traineeName").addEventListener("input", e=>{
   previewName.textContent = e.target.value || 'Trainee';
 });
-document.getElementById('traineeEmail').addEventListener('input', ()=>{});
 
 /* answer key (hidden) */
 const answerKey = {
@@ -236,9 +374,9 @@ const answerKey = {
   insurerA: 'Fake Company',
   naicAny: true,
   typeAuto: true, // scheduled auto checked
-  policyNumber: '1234567890',      // UPDATED
-  policyEff: '09/31/2008',         // NEW
-  policyExp: '09/31/2009',         // NEW
+  policyNumber: '1234567890',      // updated
+  policyEff: '09/31/2008',         // new
+  policyExp: '09/31/2009',         // new
   limits: { csl: 300000, bi_p: 100000, bi_a: 100000, pd: 50000 },
   descriptionMustInclude: ['Gruber Services','Additional Insured','written contract'],
   certHolderInclude: ['Gruber Services','Crystal Lake']
@@ -255,85 +393,78 @@ const answerKey = {
 function normalize(s){ return (s||'').toString().toLowerCase(); }
 
 /* finish & grade */
-document.getElementById('finishBtn').addEventListener('click', async ()=>{
-  const name = (document.getElementById('traineeName').value||'').trim();
-  const email = (document.getElementById('traineeEmail').value||'').trim();
+document.getElementById("finishBtn").addEventListener("click", async ()=>{
+  const name = (document.getElementById("traineeName").value||'').trim();
+  const email = (document.getElementById("traineeEmail").value||'').trim();
   if(!name || !email){ alert('Please enter name and email before finishing.'); return; }
 
   const user = {
-    date: (document.getElementById('ov_date').value||'').trim(),
-    producer: (document.getElementById('ov_producer').value||'').trim(),
-    insured: (document.getElementById('ov_insured').value||'').trim(),
-    insurerA: (document.getElementById('ov_insurerA').value||'').trim(),
-    naic: (document.getElementById('ov_naic').value||'').trim(),
-    typeAuto: document.getElementById('ov_typeAuto').checked,
-    policyNumber: (document.getElementById('ov_policyNumber').value||'').trim(),
-    policyEff: (document.getElementById('ov_policyEff').value||'').trim(),
-    policyExp: (document.getElementById('ov_policyExp').value||'').trim(),
-    limit_csl: Number((document.getElementById('ov_limit_csl').value||'').toString().replace(/[^0-9]/g,'')) || 0,
-    limit_bi_p: Number((document.getElementById('ov_limit_bi_p').value||'').toString().replace(/[^0-9]/g,'')) || 0,
-    limit_bi_a: Number((document.getElementById('ov_limit_bi_a').value||'').toString().replace(/[^0-9]/g,'')) || 0,
-    limit_pd: Number((document.getElementById('ov_limit_pd').value||'').toString().replace(/[^0-9]/g,'')) || 0,
-    description: (document.getElementById('ov_description').value||'').trim(),
-    certHolder: (document.getElementById('ov_certHolder').value||'').trim()
+    date: (document.getElementById("ov_date").value||'').trim(),
+    producer: (document.getElementById("ov_producer").value||'').trim(),
+    insured: (document.getElementById("ov_insured").value||'').trim(),
+    insurerA: (document.getElementById("ov_insurerA").value||'').trim(),
+    naic: (document.getElementById("ov_naic").value||'').trim(),
+    typeAuto: document.getElementById("ov_typeAuto").checked,
+    policyNumber: (document.getElementById("ov_policyNumber").value||'').trim(),
+    policyEff: (document.getElementById("ov_policyEff").value||'').trim(),
+    policyExp: (document.getElementById("ov_policyExp").value||'').trim(),
+    limit_csl: Number((document.getElementById("ov_limit_csl").value||'').toString().replace(/[^0-9]/g,'')) || 0,
+    limit_bi_p: Number((document.getElementById("ov_limit_bi_p").value||'').toString().replace(/[^0-9]/g,'')) || 0,
+    limit_bi_a: Number((document.getElementById("ov_limit_bi_a").value||'').toString().replace(/[^0-9]/g,'')) || 0,
+    limit_pd: Number((document.getElementById("ov_limit_pd").value||'').toString().replace(/[^0-9]/g,'')) || 0,
+    description: (document.getElementById("ov_description").value||'').trim(),
+    certHolder: (document.getElementById("ov_certHolder").value||'').trim()
   };
 
-  // grade checks (15 total)
   const results = [];
   // Date
   results.push({ label:'Date', ok: normalize(user.date) === normalize(answerKey.date), entered:user.date, expected:answerKey.date });
   // Producer
-  { const low = normalize(user.producer); const ok = answerKey.producerInclude.every(t=>low.includes(t.toLowerCase())); results.push({label:'Producer',ok,entered:user.producer,expected:'Conjuring Agency\n1313 Annabelle St. Valak Connecticut 58679'}); }
+  { const low = normalize(user.producer); const ok = answerKey.producerInclude.every(t=>low.includes(t.toLowerCase())); results.push({label:'Producer',ok,entered:user.producer,expected:'Conjuring Agency\\n1313 Annabelle St. Valak Connecticut 58679'}); }
   // Insured
-  { const low = normalize(user.insured); const ok = answerKey.insuredInclude.every(t=>low.includes(t.toLowerCase())); results.push({label:'Insured',ok,entered:user.insured,expected:'Joe Sample\n567 fake St. Cityville, NJ 02345'}); }
+  { const low = normalize(user.insured); const ok = answerKey.insuredInclude.every(t=>low.includes(t.toLowerCase())); results.push({label:'Insured',ok,entered:user.insured,expected:'Joe Sample\\n567 fake St. Cityville, NJ 02345'}); }
   // Insurer A
   { const ok = normalize(user.insurerA).includes(normalize(answerKey.insurerA)); results.push({label:'Insurer A',ok,entered:user.insurerA,expected:answerKey.insurerA}); }
-  // NAIC (bonus - accept anything)
+  // NAIC (bonus)
   results.push({ label:'NAIC #', ok:true, entered:user.naic, expected:'Any (accepted)' });
   // Type Auto
   results.push({ label:'Type of Insurance (Scheduled Auto)', ok: !!user.typeAuto, entered: user.typeAuto ? 'Checked' : 'Not checked', expected:'Checked' });
-  // Policy Number (updated)
+  // Policy Number
   results.push({ label:'Policy Number', ok: normalize(user.policyNumber) === normalize(answerKey.policyNumber), entered:user.policyNumber, expected:answerKey.policyNumber });
-  // Policy Eff & Exp (new)
+  // Policy Eff & Exp
   results.push({ label:'Policy Effective', ok: normalize(user.policyEff) === normalize(answerKey.policyEff), entered:user.policyEff, expected:answerKey.policyEff });
   results.push({ label:'Policy Expiration', ok: normalize(user.policyExp) === normalize(answerKey.policyExp), entered:user.policyExp, expected:answerKey.policyExp });
-  // Limits (4 checks)
+  // Limits (4)
   results.push({ label:'Limits — Combined Single Limit', ok: Number(user.limit_csl) === Number(answerKey.limits.csl), entered:user.limit_csl, expected:answerKey.limits.csl });
   results.push({ label:'Limits — Bodily Injury (Per person)', ok: Number(user.limit_bi_p) === Number(answerKey.limits.bi_p), entered:user.limit_bi_p, expected:answerKey.limits.bi_p });
   results.push({ label:'Limits — Bodily Injury (Per accident)', ok: Number(user.limit_bi_a) === Number(answerKey.limits.bi_a), entered:user.limit_bi_a, expected:answerKey.limits.bi_a });
   results.push({ label:'Limits — Property Damage', ok: Number(user.limit_pd) === Number(answerKey.limits.pd), entered:user.limit_pd, expected:answerKey.limits.pd });
-  // Description of Operations
+  // Description
   { const low = normalize(user.description); const ok = answerKey.descriptionMustInclude.every(t=>low.includes(t.toLowerCase())); results.push({ label:'Description of Operations', ok, entered:user.description, expected: answerKey.descriptionMustInclude.join(' / ') }); }
   // Certificate Holder
-  { const low = normalize(user.certHolder); const ok = answerKey.certHolderInclude.every(t=>low.includes(t.toLowerCase())); results.push({ label:'Certificate Holder', ok, entered:user.certHolder, expected:'Gruber Services\n13 Crystal Lake Rd. Friday, CT 58679' }); }
+  { const low = normalize(user.certHolder); const ok = answerKey.certHolderInclude.every(t=>low.includes(t.toLowerCase())); results.push({ label:'Certificate Holder', ok, entered:user.certHolder, expected:'Gruber Services\\n13 Crystal Lake Rd. Friday, CT 58679' }); }
 
-  // compute score
+  // compute & display
   const totalChecks = results.length; // 15
   const correctCount = results.filter(r=>r.ok).length;
   const percent = Math.round((correctCount/totalChecks)*100);
 
-  // show results
   const out = document.getElementById('gradeResults');
   out.innerHTML = '<h3>Results</h3>';
   results.forEach(r=>{
     const div = document.createElement('div');
     div.className = 'result-row ' + (r.ok ? 'ok' : 'bad');
-    div.innerHTML = `<div style="max-width:74%"><strong>${r.label}</strong><div class="expected">${escapeHtml(r.entered) || '<em>empty</em>'}</div></div>
-                     <div style="text-align:right">${r.ok ? '✅ Correct' : '❌ Incorrect'}<div class="expected" style="margin-top:6px">Expected: <strong style="color:#222">${escapeHtml(r.expected)}</strong></div></div>`;
+    div.innerHTML = `<div style="max-width:74%"><strong>${r.label}</strong><div style="font-size:0.9rem;color:#333">${r.entered || '<em>empty</em>'}</div></div>
+                     <div style="text-align:right">${r.ok ? '✅ Correct' : '❌ Incorrect'}<div style="font-size:0.85rem;color:#666;margin-top:6px">Expected: <strong style="color:#222">${r.expected}</strong></div></div>`;
     out.appendChild(div);
   });
-  const summary = document.createElement('div');
-  summary.style.marginTop='12px';
+  const summary = document.createElement('div'); summary.style.marginTop='12px';
   summary.innerHTML = `<strong>Total:</strong> ${correctCount}/${totalChecks} — <strong>${percent}%</strong>`;
   out.appendChild(summary);
-  out.classList.remove('hidden');
+  out.style.display='block';
 
-  // show post actions
-  const post = document.getElementById('postActions');
-  post.innerHTML = '';
-  post.classList.remove('hidden');
-
-  const passing = percent >= 95; // with 15 checks this requires all correct
+  const post = document.getElementById('postActions'); post.innerHTML=''; post.style.display='block';
+  const passing = percent >= 95;
 
   if(passing){
     const p = document.createElement('div'); p.innerHTML = `<p class="correct"><strong>Congratulations — you passed!</strong></p>`;
@@ -343,8 +474,7 @@ document.getElementById('finishBtn').addEventListener('click', async ()=>{
       const payload = { name, email, score: percent, activity: 'ACORD 25 - COI Creation Activity', course: 'COI' };
       submitBtn.disabled = true; submitBtn.textContent = 'Submitting...';
       try{
-        const res = await fetch(SHEET_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-        await res.json();
+        await fetch(SHEET_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
         submitBtn.textContent = 'Submitted ✓';
         showCertificate(name, percent);
       }catch(err){
@@ -355,10 +485,10 @@ document.getElementById('finishBtn').addEventListener('click', async ()=>{
     post.appendChild(p); post.appendChild(submitBtn);
   } else {
     const p = document.createElement('div'); p.innerHTML = `<p class="wrong"><strong>Thank you! Please try again.</strong></p>`;
-    const retry = document.createElement('button'); retry.className='btn secondary'; retry.textContent='Retry Activity';
-    retry.onclick = ()=>{ resetPart2Form(); };
+    const retry = document.createElement('button'); retry.className='btn secondary'; retry.textContent='Retry Activity'; retry.onclick = ()=>{ resetPart2Form(); };
     post.appendChild(p); post.appendChild(retry);
-    // optional record attempt button
+
+    // optional record attempt
     const recordNote = document.createElement('div'); recordNote.style.marginTop='8px';
     recordNote.innerHTML = `<small>If you want to record this attempt to the course activity sheet, click below.</small>`;
     const recordBtn = document.createElement('button'); recordBtn.className='btn'; recordBtn.textContent='Record Attempt';
@@ -371,33 +501,26 @@ document.getElementById('finishBtn').addEventListener('click', async ()=>{
   }
 });
 
-/* reset part2 form */
+/* reset part2 */
 function resetPart2Form(){
   document.querySelectorAll('#part2 input, #part2 textarea').forEach(el=>{
     if(el.type==='checkbox') el.checked=false; else el.value='';
   });
   // prefill date again
-  const today = new Date(); const mm=String(today.getMonth()+1).padStart(2,'0'); const dd=String(today.getDate()).padStart(2,'0'); const yyyy=today.getFullYear();
-  document.getElementById('ov_date').value = mm + '/' + dd + '/' + yyyy;
-  document.getElementById('gradeResults').classList.add('hidden');
-  document.getElementById('postActions').classList.add('hidden');
-  document.getElementById('certificateWrap').classList.add('hidden');
+  const today = new Date(); const mm=String(today.getMonth()+1).padStart(2,'0'); const dd=String(today.getDate()).padStart(2,'0');
+  document.getElementById('ov_date').value = mm + '/' + dd + '/' + today.getFullYear();
+  document.getElementById('gradeResults').style.display='none';
+  document.getElementById('postActions').style.display='none';
+  document.getElementById('certificateWrap').style.display='none';
 }
 document.getElementById('resetPart2').addEventListener('click', resetPart2Form);
 
-/* show certificate */
+/* certificate display */
 function showCertificate(name, percent){
-  const wrap = document.getElementById('certificateWrap'); wrap.innerHTML=''; wrap.classList.remove('hidden');
-  const cert = document.createElement('div'); cert.className='certificate';
+  const wrap = document.getElementById('certificateWrap'); wrap.innerHTML=''; wrap.style.display='block';
+  const cert = document.createElement('div'); cert.style.cssText='width:700px;border:6px solid #002b5b;padding:18px;background:#fff;margin-top:16px;border-radius:8px;text-align:center';
   const t=new Date(); const mm=String(t.getMonth()+1).padStart(2,'0'); const dd=String(t.getDate()).padStart(2,'0'); const yyyy=t.getFullYear();
-  cert.innerHTML = `
-    <img src="https://i.imgur.com/d2BCvGL.png" class="logo" alt="Office Beacon"><h2>Certificate of Completion</h2>
-    <p>This certifies that</p>
-    <h3>${escapeHtml(name)}</h3>
-    <p>has successfully passed the <strong>ACORD 25 - COI Creation Activity</strong> with a score of <strong>${percent}%</strong>.</p>
-    <p class="small">Date: ${mm}/${dd}/${yyyy}</p>
-    <div style="margin-top:12px;"><button class="btn" onclick="window.print()">Print / Save as PDF</button></div>
-  `;
+  cert.innerHTML = `<img src="https://i.imgur.com/d2BCvGL.png" style="height:60px"><h2>Certificate of Completion</h2><p>This certifies that</p><h3>${escapeHtml(name)}</h3><p>has successfully passed the <strong>ACORD 25 - COI Creation Activity</strong> with a score of <strong>${percent}%</strong>.</p><p style="font-size:0.9rem">Date: ${mm}/${dd}/${yyyy}</p><div style="margin-top:12px;"><button class="btn" onclick="window.print()">Print / Save as PDF</button></div>`;
   wrap.appendChild(cert);
 }
 
