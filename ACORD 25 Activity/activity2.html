@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACORD 25 – COI Creation Activity</title>
+<style>
+  body {
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg,#002b5b 0%,#0056b3 40%,#ffcc00 100%);
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    color:#002b5b; margin:0;
+  }
+  header {background:rgba(0,43,91,0.9);color:#fff;display:flex;align-items:center;
+          padding:10px 20px;width:100%;box-shadow:0 4px 10px rgba(0,0,0,0.3);}
+  header img{height:45px;margin-right:10px;}
+  form{background:#fff;padding:25px 40px;margin-top:30px;border-radius:12px;
+       box-shadow:0 4px 20px rgba(0,0,0,.25);width:700px;max-width:95%;}
+  h2{color:#ffcc00;text-align:center;margin-bottom:20px;}
+  label{font-weight:600;display:block;margin-top:12px;}
+  input,textarea{width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;}
+  button{margin-top:20px;background:#002b5b;color:#fff;padding:10px 25px;
+         border:none;border-radius:6px;cursor:pointer;}
+  button:hover{background:#004080;}
+</style>
+</head>
+<body>
+  <header>
+    <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo">
+    <h3>Office Beacon Training – ACORD 25 COI Creation Activity</h3>
+  </header>
+
+  <form id="coiForm">
+    <h2>COI Creation Request</h2>
+    <p id="intro"></p>
+
+    <label>Name</label><input type="text" name="name" required>
+    <label>Email</label><input type="email" name="email" required>
+
+    <hr>
+    <label>Date</label><input type="date" name="date" required>
+    <label>Producer</label><input type="text" name="producer" value="Conjuring Agency – 1313 Annabelle St. Valak CT 58679" required>
+    <label>Insured</label><input type="text" name="insured" value="Joe Sample – 567 Fake St. Cityville NJ 02345" required>
+    <label>Policy Number</label><input type="text" name="policyNumber" value="1234567890" required>
+    <label>Policy Eff</label><input type="text" name="policyEff" value="09/31/2008">
+    <label>Policy Exp</label><input type="text" name="policyExp" value="09/31/2009">
+    <label>Type of Insurance</label><input type="text" name="typeAuto" value="Scheduled Auto" required>
+    <label>Limits</label><textarea name="limits">Combined Single Limit 300,000 | BI Per Person 100,000 | BI Per Accident 100,000 | Property Damage 50,000</textarea>
+    <label>Description of Operations</label>
+    <textarea name="description">The Certificate Holder Gruber Services is named as an Additional Insured with respect to the General Liability per written contract.</textarea>
+    <label>Certificate Holder</label>
+    <textarea name="certificateHolder">Gruber Services – 13 Crystal Lake Rd. Friday CT 58679</textarea>
+
+    <input type="hidden" name="course" value="COI">
+    <input type="hidden" name="activity" value="ACORD 25 – COI Creation Activity">
+    <input type="hidden" name="score" id="score" value="0">
+
+    <button type="submit">Submit Activity</button>
+  </form>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbxeEcTMN-pLwoOd9Qptj6-RsFDxpxYOTyXtkLx7D-F1jdRNMU9BL4EQ8tql1tesU8nM/exec";
+const form = document.getElementById("coiForm");
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(form).entries());
+  fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(r => {
+    if (r.status === "ok") {
+      alert("✅ Submitted successfully! View your filled PDF:\n" + r.fileUrl);
+    } else alert("⚠️ Error submitting. Try again.");
+  })
+  .catch(err => alert("Error: " + err));
+});
+</script>
+</body>
+</html>
