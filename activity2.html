@@ -1,124 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ACORD 25 – COI Creation Activity</title>
-<style>
-  :root {
-    --navy: #002b5b;
-    --gold: #ffcc00;
-    --ok: #2ea44f;
-    --bad: #d9534f;
-  }
-
-  body {
-    font-family: "Segoe UI", sans-serif;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #002b5b 0%, #0056b3 40%, #ffcc00 100%);
-    background-attachment: fixed;
-    color: var(--navy);
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(255,255,255,0.35);
-    backdrop-filter: blur(2px);
-    z-index: -1;
-  }
-
-  header {
-    background: rgba(0, 43, 91, 0.9);
-    color: white;
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
-    width: 100%;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  }
-
-  header img { height: 45px; margin-right: 10px; }
-  h1 { color: var(--gold); margin-top: 20px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
-  #userInfo, #instructions { 
-    background: #fff; padding: 25px 40px; margin: 20px; border-radius: 12px; 
-    box-shadow: 0 4px 20px rgba(0,0,0,.25); max-width: 700px; width: 95%; text-align: left; 
-  }
-  label { display:block; margin-top:12px; font-weight:600; }
-  input { width: 100%; padding:8px; margin-top:5px; border-radius:6px; border:1px solid #ccc; }
-  button { margin-top:20px; background: var(--navy); color:#fff; padding:10px 25px; border:none; border-radius:6px; cursor:pointer; }
-  button:hover { background:#004080; }
-  a.download-link { display:block; margin:10px 0; color:var(--navy); text-decoration:none; font-weight:bold; }
-  a.download-link:hover { text-decoration:underline; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity 2 – COI Upload</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #004aad, #e6b800);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 750px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+    h2 {
+      text-align: center;
+      color: #004aad;
+      margin-bottom: 10px;
+    }
+    p {
+      line-height: 1.6;
+    }
+    .instructions {
+      background: #f7f9fc;
+      border-left: 5px solid #004aad;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+    .download-links a {
+      display: inline-block;
+      margin: 10px 5px;
+      padding: 10px 20px;
+      background-color: #004aad;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+    .download-links a:hover {
+      background-color: #00337a;
+    }
+    form {
+      margin-top: 25px;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    input[type="file"] {
+      border: 1px dashed #aaa;
+      background: #fafafa;
+    }
+    button {
+      background-color: #004aad;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #00337a;
+    }
+    #message {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h2>Activity 2 – Upload Your Completed COI</h2>
 
-<header>
-  <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo">
-  <h3>Office Beacon Training – ACORD 25 COI Creation Activity</h3>
-</header>
+    <div class="instructions">
+      <p>Hello!</p>
+      <p>For this activity, please complete the following:</p>
+      <ol>
+        <li>Download the Declaration (DEC) Page and Fillable COI Form below.</li>
+        <li>Fill out the form completely.</li>
+        <li>Save your completed COI as a PDF file.</li>
+        <li>Upload the completed COI using the form below.</li>
+      </ol>
+    </div>
 
-<h1>COI Creation Activity</h1>
+    <div class="download-links">
+      <a href="https://drive.google.com/file/d/1EnfKS6UDqdniI1fLl3yP6SymiuAnsffe/view" target="_blank">📄 Download DEC Page</a>
+      <a href="https://drive.google.com/file/d/1TSCpP5qPtoBorBqWuzNJMCbzXIjAzGd-/view" target="_blank">📝 Download Fillable COI Form</a>
+    </div>
 
-<!-- Name, Email, and previous quiz score -->
-<div id="userInfo">
-  <label>Name</label><input type="text" id="name" required>
-  <label>Email</label><input type="email" id="email" required>
-  <label>Activity 1 Quiz Score (%)</label><input type="number" id="quizScore" min="0" max="100" required>
-  <button id="startActivity">Start Activity</button>
-</div>
+    <form id="uploadForm" action="https://script.google.com/macros/s/AKfycbwt_Z2Szo83GSrfee3WAQZY3mekk-WcuGZBmQZTHaeJyd3dHB04P05eYXsrSq0bggQP/exec" method="post" enctype="multipart/form-data">
+      <label for="name">Full Name:</label>
+      <input type="text" name="name" id="name" placeholder="Enter your name" required>
 
-<!-- Email-style instructions & downloads -->
-<div id="instructions" style="display:none;">
-  <p>Hi <span id="displayName"></span>,</p>
-  <p>Kindly create a Certificate of Insurance (COI) for Joe Sample’s policy, listing Gruber Services as an Additional Insured.</p>
-  <p>Gruber Services<br>13 Crystal Lake Rd.<br>Friday, CT 58679</p>
-  <p>Attached is Joe Sample’s policy Declarations Page for your reference.</p>
-  <p>— Lorraine Warren<br>Conjuring Agency<br>1313 Annabelle St.<br>Valak, CT 58679</p>
+      <label for="email">Email Address:</label>
+      <input type="email" name="email" id="email" placeholder="Enter your email" required>
 
-  <a class="download-link" href="file:///C:/Users/Training/Documents/Hazel%20Files/Acord/ACORD%2025%20fillable.pdf" target="_blank" download>📄 Download ACORD 25 Fillable PDF</a>
-  <a class="download-link" href="file:///D:/Downloads/sample-declarations-page-2018.pdf" target="_blank" download>📄 Download DEC Page</a>
+      <label for="pdfFile">Upload Completed COI (PDF only):</label>
+      <input type="file" name="pdfFile" id="pdfFile" accept="application/pdf" required>
 
-  <!-- Upload form -->
-  <form id="uploadForm" method="POST" action="https://script.google.com/macros/s/AKfycbxdL1giytlT6v1rcaXgRPKpeo-31Rq57FTBWxwJdBkIu87i1OfrziIqbKo2gyGkV9h3/exec" enctype="multipart/form-data" target="_blank">
-    <input type="hidden" name="name" id="formName">
-    <input type="hidden" name="email" id="formEmail">
-    <input type="hidden" name="activity" value="ACORD 25 – COI Creation Activity">
-    <input type="hidden" name="quizScore" id="formQuizScore">
-    <label for="pdfFile">Upload Completed PDF:</label>
-    <input type="file" name="pdfFile" id="pdfFile" accept=".pdf" required>
-    <button type="submit">Submit Completed PDF</button>
-  </form>
-</div>
+      <input type="hidden" name="quizScore" id="quizScore" value="100">
 
-<script>
-const startBtn = document.getElementById('startActivity');
-const userInfo = document.getElementById('userInfo');
-const instructions = document.getElementById('instructions');
-const displayName = document.getElementById('displayName');
-const formName = document.getElementById('formName');
-const formEmail = document.getElementById('formEmail');
-const formQuizScore = document.getElementById('formQuizScore');
+      <button type="submit">Submit Completed PDF</button>
+    </form>
 
-startBtn.onclick = () => {
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const quizScore = parseInt(document.getElementById('quizScore').value);
-  if(!name || !email || isNaN(quizScore)) return alert("Please enter Name, Email, and Quiz Score");
-  displayName.textContent = name;
-  formName.value = name;
-  formEmail.value = email;
-  formQuizScore.value = quizScore;
-  userInfo.style.display = 'none';
-  instructions.style.display = 'block';
-};
-</script>
+    <div id="message"></div>
+  </div>
 
+  <script>
+    const form = document.getElementById('uploadForm');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      message.textContent = "Uploading... please wait.";
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.text();
+        message.innerHTML = result;
+      } catch (err) {
+        message.textContent = "❌ Error uploading file. Please try again.";
+        console.error(err);
+      }
+    });
+  </script>
 </body>
 </html>
