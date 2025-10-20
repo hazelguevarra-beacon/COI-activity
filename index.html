@@ -5,7 +5,94 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ACORD 25 Interactive Quiz - Complete</title>
 <style>
-  /* Keep your existing styles unchanged */
+  :root {
+    --navy: #002b5b;
+    --gold: #ffcc00;
+    --ok: #2ea44f;
+    --bad: #d9534f;
+  }
+  body {
+    font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #002b5b 0%, #0056b3 40%, #ffcc00 100%);
+    background-attachment: fixed;
+    color: var(--navy);
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(2px);
+    z-index: -1;
+  }
+  header {
+    background: rgba(0, 43, 91, 0.9);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  header img {
+    height: 45px;
+    margin-right: 10px;
+  }
+  h1 {
+    color: var(--gold);
+    margin-top: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  }
+  .quiz {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+    border: 2px solid var(--navy);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  }
+  .quiz img {
+    width: 650px;
+    display: block;
+  }
+  .option {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: url("https://i.imgur.com/goJQm2I.png") no-repeat center/contain;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .option:hover { transform: scale(1.2); }
+  .disabled { pointer-events: none; opacity: 0.7; }
+  #feedback { font-size: 1.2rem; font-weight: bold; margin-top: 15px; text-align: center; text-shadow: 0 1px 1px rgba(255,255,255,0.7); }
+  .correct { color: var(--ok); }
+  .wrong { color: var(--bad); }
+  #end {
+    display: none;
+    text-align: center;
+    margin-top: 25px;
+    background: rgba(255,255,255,0.8);
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  a.next {
+    background: var(--navy);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  a.next:hover { background: #004080; }
 </style>
 </head>
 <body>
@@ -27,11 +114,12 @@
 <div id="end">
   <h2>Activity Complete!</h2>
   <p>Your total score: <span id="score">0</span>/10</p>
-  <a class="next" id="nextActivityBtn" href="#">➡️ Proceed to the Next Activity</a>
+  <!-- ✅ Pass Activity 1 score to Activity 2 -->
+  <a class="next" id="nextActivityBtn" href="https://script.google.com/macros/s/AKfycbzA178GCCVWV84kd5rEjnzdaU8knSG9MvlndsZVApslylbVUn5KJ3191vGZpsFgE_-t/exec">➡️ Proceed to the Next Activity</a>
 </div>
 
 <script>
-const questions = [ /* your existing 10 questions */ ];
+const questions = [ /* your existing questions array */ ];
 
 let current = 0;
 let score = 0;
@@ -43,7 +131,6 @@ const optionsDiv = document.getElementById("options");
 const feedback = document.getElementById("feedback");
 const end = document.getElementById("end");
 const scoreEl = document.getElementById("score");
-const nextBtn = document.getElementById("nextActivityBtn");
 
 function loadQuestion() {
   const q = questions[current];
@@ -52,7 +139,6 @@ function loadQuestion() {
   qImage.src = q.image;
   feedback.textContent = "";
   optionsDiv.innerHTML = "";
-
   q.options.forEach(opt => {
     const btn = document.createElement("div");
     btn.classList.add("option");
@@ -65,23 +151,13 @@ function loadQuestion() {
 
 function checkAnswer(btn, isCorrect) {
   document.querySelectorAll(".option").forEach(b => b.classList.add("disabled"));
-
-  if (isCorrect) {
-    feedback.textContent = "✅ Correct!";
-    feedback.className = "correct";
-    score++;
-  } else {
-    feedback.textContent = "❌ Oops, wrong answer!";
-    feedback.className = "wrong";
-  }
+  if (isCorrect) { feedback.textContent = "✅ Correct!"; feedback.className = "correct"; score++; }
+  else { feedback.textContent = "❌ Oops, wrong answer!"; feedback.className = "wrong"; }
 
   setTimeout(() => {
     current++;
-    if (current < questions.length) {
-      loadQuestion();
-    } else {
-      showEnd();
-    }
+    if (current < questions.length) loadQuestion();
+    else showEnd();
   }, 1500);
 }
 
@@ -91,9 +167,8 @@ function showEnd() {
   end.style.display = "block";
   scoreEl.textContent = score;
 
-  // Set Activity 2 URL with score parameter
-  const activity2Url = "https://script.google.com/macros/s/AKfycbzA178GCCVWV84kd5rEjnzdaU8knSG9MvlndsZVApslylbVUn5KJ3191vGZpsFgE_-t/exec"; // Replace with your Apps Script web app URL
-  nextBtn.href = `${activity2Url}?quizScore=${score}`;
+  // ✅ Minimal change: add query string with score for Activity 2
+  document.getElementById("nextActivityBtn").href = "activity2.html?quizScore=" + score;
 }
 
 loadQuestion();
