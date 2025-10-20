@@ -1,143 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Activity 2 - COI Creation</title>
 <style>
-  :root{--navy:#002b5b;--gold:#ffcc00}
-  body{font-family:"Segoe UI",sans-serif;margin:0;display:flex;flex-direction:column;align-items:center;min-height:100vh;background:linear-gradient(135deg,#002b5b 0%,#0056b3 40%,#ffcc00 100%);color:var(--navy)}
-  body::before{content:"";position:fixed;inset:0;background:rgba(255,255,255,0.35);backdrop-filter:blur(2px);z-index:-1}
-  header{background:rgba(0,43,91,0.9);color:#fff;display:flex;align-items:center;padding:10px 20px;width:100%;box-shadow:0 4px 10px rgba(0,0,0,0.2)}
-  header img{height:45px;margin-right:10px}
-  main{background:rgba(255,255,255,0.95);border-radius:10px;padding:25px 40px;margin-top:30px;width:90%;max-width:700px;box-shadow:0 4px 15px rgba(0,0,0,0.25)}
-  h2{color:var(--navy);text-align:center}
-  .download-links a{display:inline-block;background:var(--navy);color:#fff;padding:10px 14px;border-radius:6px;text-decoration:none;margin:8px 6px}
-  .download-links a:hover{background:#004080}
-  form{margin-top:18px;display:flex;flex-direction:column;gap:10px}
-  input[type="text"],input[type="email"],input[type="number"]{padding:8px;border-radius:6px;border:1px solid #ccc}
-  input[type="file"]{border-radius:6px}
-  button{background:var(--navy);color:#fff;padding:10px;border:none;border-radius:8px;cursor:pointer}
-  #result{margin-top:14px;text-align:center;font-weight:700}
+  :root {
+    --navy: #002b5b;
+    --gold: #ffcc00;
+  }
+
+  body {
+    font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #002b5b 0%, #0056b3 40%, #ffcc00 100%);
+    background-attachment: fixed;
+    color: var(--navy);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(2px);
+    z-index: -1;
+  }
+
+  header {
+    background: rgba(0, 43, 91, 0.9);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  header img {
+    height: 45px;
+    margin-right: 10px;
+  }
+
+  main {
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 10px;
+    padding: 25px 40px;
+    margin-top: 30px;
+    width: 90%;
+    max-width: 700px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  }
+
+  h2 {
+    color: var(--navy);
+    text-align: center;
+  }
+
+  a.download {
+    display: inline-block;
+    background: var(--navy);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-top: 10px;
+    transition: background 0.3s;
+  }
+  a.download:hover {
+    background: #004080;
+  }
+
+  form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  input[type="text"], input[type="email"], input[type="number"], input[type="file"] {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  button {
+    background: var(--navy);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #004080;
+  }
+
+  #result {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+  }
 </style>
 </head>
 <body>
-<header>
-  <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo"/>
-  <h3>Office Beacon Training - COI Activity 2</h3>
-</header>
+  <header>
+    <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo" />
+    <h3>Office Beacon Training - COI Activity 2</h3>
+  </header>
 
-<main>
-  <h2>Email Instructions</h2>
-  <p><strong>From:</strong> Lorraine Warren (Conjuring Agency)<br>
-     <strong>To:</strong> You<br><br>
-     Hi <span id="userName">[Name]</span>,<br><br>
-     Kindly create a Certificate of Insurance (COI) for Joe Sample’s policy, listing <strong>Gruber Services</strong> as an Additional Insured.<br><br>
-     <strong>Gruber Services</strong><br>13 Crystal Lake Rd.<br>Friday, CT 58679<br><br>
-     Attached is Joe Sample’s policy Declarations Page for your reference.<br><br>
-     — Lorraine Warren<br>Conjuring Agency<br>1313 Annabelle St.<br>Valak, CT 58679
-  </p>
+  <main>
+    <h2>Email Instructions</h2>
+    <p><strong>From:</strong> Lorraine Warren (Conjuring Agency)<br>
+       <strong>To:</strong> You<br><br>
+       Hi <span id="userName">[Name]</span>,<br><br>
+       Kindly create a Certificate of Insurance (COI) for Joe Sample’s policy, listing <strong>Gruber Services</strong> as an Additional Insured.<br><br>
+       <strong>Gruber Services</strong><br>
+       13 Crystal Lake Rd.<br>
+       Friday, CT 58679<br><br>
+       Attached is Joe Sample’s policy Declarations Page for your reference.<br><br>
+       — Lorraine Warren<br>
+       Conjuring Agency<br>
+       1313 Annabelle St.<br>
+       Valak, CT 58679
+    </p>
 
-  <div class="download-links">
-    <!-- Replace these two links with your Drive direct-download URLs or web app served links -->
-    <a href="https://drive.google.com/file/d/1EnfKS6UDqdniI1fLl3yP6SymiuAnsffe/view" target="_blank">📄 Download DEC Page</a>
-    <a href="https://drive.google.com/file/d/1TSCpP5qPtoBorBqWuzNJMCbzXIjAzGd-/view" target="_blank">📝 Download ACORD 25 Fillable Form</a>
-  </div>
+    <h3>Download Files:</h3>
+    <a href="https://drive.google.com/file/d/1EnfKS6UDqdniI1fLl3yP6SymiuAnsffe/view" target="_blank" class="download">📄 Download Declarations Page</a><br>
+    <a href="https://drive.google.com/file/d/1TSCpP5qPtoBorBqWuzNJMCbzXIjAzGd-/view" target="_blank" class="download">📝 Download ACORD 25 Fillable Form</a>
 
-  <form id="uploadForm">
-    <label>Name</label>
-    <input type="text" id="name" name="name" required>
+    <form id="uploadForm">
+      <label>Name:</label>
+      <input type="text" id="name" name="name" required>
 
-    <label>Email</label>
-    <input type="email" id="email" name="email" required>
+      <label>Email:</label>
+      <input type="email" id="email" name="email" required>
 
-    <label>Quiz Score (from Activity 1)</label>
-    <input type="number" id="quizScore" name="quizScore" min="0" max="100" required>
+      <label>Quiz Score:</label>
+      <input type="number" id="quizScore" name="quizScore" readonly>
 
-    <label>Upload completed COI (PDF)</label>
-    <input type="file" id="pdfFile" accept="application/pdf" required>
+      <label>Upload your completed PDF:</label>
+      <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf" required>
 
-    <button type="submit">Submit Completed PDF</button>
-  </form>
+      <button type="submit">Submit Completed PDF</button>
+    </form>
 
-  <div id="result"></div>
-</main>
+    <div id="result"></div>
+  </main>
 
-<script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzA178GCCVWV84kd5rEjnzdaU8knSG9MvlndsZVApslylbVUn5KJ3191vGZpsFgE_-t/exec"; // <-- REPLACE with your published Apps Script Web App URL
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzA178GCCVWV84kd5rEjnzdaU8knSG9MvlndsZVApslylbVUn5KJ3191vGZpsFgE_-t/exec"; // Replace if redeployed
 
-// Populate fields if passed via query string
-function getQueryParams() {
-  const params = {};
-  const qs = location.search.substring(1);
-  if (!qs) return params;
-  qs.split("&").forEach(pair => {
-    const [k, v] = pair.split("=");
-    params[decodeURIComponent(k)] = decodeURIComponent(v || "");
-  });
-  return params;
-}
-window.addEventListener("load", () => {
-  const p = getQueryParams();
-  if (p.name) document.getElementById("name").value = p.name;
-  if (p.email) document.getElementById("email").value = p.email;
-  if (p.quizScore) document.getElementById("quizScore").value = p.quizScore;
-  if (p.name) document.getElementById("userName").textContent = p.name;
-});
+    // Parse query parameters
+    function getQueryParams() {
+      const params = {};
+      window.location.search.substring(1).split("&").forEach(pair => {
+        const [key, value] = pair.split("=");
+        params[key] = decodeURIComponent(value || "");
+      });
+      return params;
+    }
 
-// Convert file to base64 and POST JSON to Apps Script
-document.getElementById("uploadForm").addEventListener("submit", function(e){
-  e.preventDefault();
-  const fileEl = document.getElementById("pdfFile");
-  const file = fileEl.files[0];
-  if (!file) { alert("Select a PDF file to upload."); return; }
-
-  const reader = new FileReader();
-  reader.onload = function(evt) {
-    // evt.target.result is like "data:application/pdf;base64,JVBERi0x..."
-    const dataUrl = evt.target.result;
-    const base64 = dataUrl.split(",")[1];
-
-    const payload = {
-      base64: base64,
-      fileName: file.name,
-      name: document.getElementById("name").value,
-      email: document.getElementById("email").value,
-      quizScore: document.getElementById("quizScore").value
+    window.onload = () => {
+      const params = getQueryParams();
+      if (params.name) document.getElementById("name").value = params.name;
+      if (params.email) document.getElementById("email").value = params.email;
+      if (params.quizScore) document.getElementById("quizScore").value = params.quizScore;
+      if (params.name) document.getElementById("userName").innerText = params.name;
     };
 
-    document.getElementById("result").textContent = "Uploading... please wait.";
+    document.getElementById("uploadForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const resultDiv = document.getElementById("result");
+      resultDiv.textContent = "⏳ Uploading... Please wait.";
 
-    fetch(WEB_APP_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-    .then(r => r.json())
-    .then(res => {
-      if (res && res.status === "ok") {
-        const pass = res.score >= 95;
-        document.getElementById("result").innerHTML =
-          (pass ? "✅ " : "⚠️ ") + res.message +
-          "<br><br>Saved file: <a href='" + res.fileUrl + "' target='_blank'>" + res.fileName + "</a>";
-        // Optionally disable form after success
-        document.querySelector("button[type=submit]").disabled = true;
-      } else {
-        document.getElementById("result").textContent = "❌ Error uploading file: " + (res && res.message ? res.message : "unknown error");
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      document.getElementById("result").textContent = "❌ Error uploading file. Check console.";
+      const fileInput = document.getElementById("pdfFile");
+      const file = fileInput.files[0];
+      if (!file) return alert("Please select a PDF file first.");
+
+      const reader = new FileReader();
+      reader.onload = async function() {
+        const base64Data = reader.result.split(",")[1]; // remove data: prefix
+        const payload = {
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          quizScore: document.getElementById("quizScore").value,
+          fileName: file.name,
+          fileContent: base64Data
+        };
+
+        try {
+          const res = await fetch(WEB_APP_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.success) {
+            resultDiv.innerHTML = `${data.message}<br><a href="${data.fileUrl}" target="_blank">📂 View uploaded file</a>`;
+          } else {
+            resultDiv.textContent = data.message || "❌ Upload failed.";
+          }
+        } catch (err) {
+          console.error(err);
+          resultDiv.textContent = "❌ Network or script error. Please try again.";
+        }
+      };
+      reader.readAsDataURL(file);
     });
-  };
-
-  reader.onerror = function() {
-    alert("Failed reading file.");
-  };
-
-  reader.readAsDataURL(file);
-});
-</script>
+  </script>
 </body>
 </html>
