@@ -147,7 +147,6 @@
   <div id="end">
     <h2>Activity Complete!</h2>
     <p>Your total score: <span id="score">0</span>/10</p>
-    <!-- ✅ This will now pass the score dynamically -->
     <a class="next" id="nextBtn">➡️ Proceed to the Next Activity</a>
   </div>
 
@@ -155,7 +154,7 @@
 const questions = [
   {
     title: "Question 1",
-    text: "Where are you going to indicate the <strong>date you created your COI?</strong>",
+    text: "Where are you going to indicate the <strong>date you created your COI?</strong>?",
     image: "https://i.imgur.com/9QIBiUp.jpeg",
     options: [
       { top: 30, left: 515, correct: true },
@@ -165,7 +164,7 @@ const questions = [
   },
   {
     title: "Question 2",
-    text: "Look at the details below and select which part of the ACORD should contain them:<br><strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>",
+    text: "Where should the following details go?<br><strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>",
     image: "https://i.imgur.com/9QIBiUp.jpeg",
     options: [
       { top: 150, left: 90, correct: true },
@@ -225,7 +224,7 @@ const questions = [
   },
   {
     title: "Question 8",
-    text: "Where should you place the phrase:<br><strong>The Certificate Holder is named as an Additional Insured with respect to the General Liability per written contract.</strong>",
+    text: "Where should you place this note?<br><strong>The Certificate Holder is named as an Additional Insured with respect to the General Liability per written contract.</strong>",
     image: "https://i.imgur.com/YPwppvo.jpeg",
     options: [
       { top: 400, left: 80, correct: true },
@@ -286,7 +285,6 @@ function loadQuestion() {
 
 function checkAnswer(btn, isCorrect) {
   document.querySelectorAll(".option").forEach(b => b.classList.add("disabled"));
-
   if (isCorrect) {
     feedback.textContent = "✅ Correct!";
     feedback.className = "correct";
@@ -295,7 +293,6 @@ function checkAnswer(btn, isCorrect) {
     feedback.textContent = "❌ Oops, wrong answer!";
     feedback.className = "wrong";
   }
-
   setTimeout(() => {
     current++;
     if (current < questions.length) {
@@ -312,19 +309,17 @@ function showEnd() {
   end.style.display = "block";
   scoreEl.textContent = score;
 
-  // ✅ Save score for Activity 2
-  localStorage.setItem("activity1Score", score);
+  // ✅ Store the values for Activity 2
+  localStorage.setItem("activity1Score", score * 10);
+  localStorage.setItem("activity1Name", localStorage.getItem("userName") || "");
+  localStorage.setItem("activity1Email", localStorage.getItem("userEmail") || "");
 }
 
 loadQuestion();
 
-// ✅ NEW ADDITION: Pass score to Activity 2
+// ✅ Proceed to Activity 2
 document.getElementById("nextBtn").addEventListener("click", () => {
-  const quizScore = score * 10; // Convert to 100 scale
-  const name = localStorage.getItem("userName") || "Trainee";
-  const email = localStorage.getItem("userEmail") || "";
-  const nextURL = `https://script.google.com/macros/s/AKfycbzA178GCCVWV84kd5rEjnzdaU8knSG9MvlndsZVApslylbVUn5KJ3191vGZpsFgE_-t/exec?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&quizScore=${quizScore}`;
-  window.location.href = nextURL;
+  window.location.href = "https://script.google.com/macros/s/AKfycbzA178GCCVWV84kd5rEjnzdaU8knSG9MvlndsZVApslylbVUn5KJ3191vGZpsFgE_-t/exec"; // replace with your Activity 2 page
 });
 </script>
 </body>
