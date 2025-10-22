@@ -11,6 +11,7 @@
     --ok: #2ea44f;
     --bad: #d9534f;
   }
+
   body {
     font-family: "Segoe UI", sans-serif;
     margin: 0;
@@ -22,6 +23,7 @@
     background-attachment: fixed;
     color: var(--navy);
   }
+
   body::before {
     content: "";
     position: fixed;
@@ -30,6 +32,7 @@
     backdrop-filter: blur(2px);
     z-index: -1;
   }
+
   header {
     background: rgba(0, 43, 91, 0.9);
     color: white;
@@ -39,15 +42,18 @@
     width: 100%;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
+
   header img {
     height: 45px;
     margin-right: 10px;
   }
+
   h1 {
     color: var(--gold);
     margin-top: 20px;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
   }
+
   .quiz {
     position: relative;
     display: inline-block;
@@ -58,10 +64,12 @@
     background: #fff;
     box-shadow: 0 4px 15px rgba(0,0,0,0.25);
   }
+
   .quiz img {
     width: 650px;
     display: block;
   }
+
   .option {
     position: absolute;
     width: 25px;
@@ -70,11 +78,32 @@
     cursor: pointer;
     transition: transform 0.2s;
   }
-  .option:hover { transform: scale(1.2); }
-  .disabled { pointer-events: none; opacity: 0.7; }
-  #feedback { font-size: 1.2rem; font-weight: bold; margin-top: 15px; text-align: center; text-shadow: 0 1px 1px rgba(255,255,255,0.7); }
-  .correct { color: var(--ok); }
-  .wrong { color: var(--bad); }
+
+  .option:hover {
+    transform: scale(1.2);
+  }
+
+  .disabled {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  #feedback {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 15px;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.7);
+  }
+
+  .correct {
+    color: var(--ok);
+  }
+
+  .wrong {
+    color: var(--bad);
+  }
+
   #end {
     display: none;
     text-align: center;
@@ -84,6 +113,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   }
+
   a.next {
     background: var(--navy);
     color: white;
@@ -92,34 +122,138 @@
     text-decoration: none;
     transition: background 0.3s;
   }
-  a.next:hover { background: #004080; }
+
+  a.next:hover {
+    background: #004080;
+  }
 </style>
 </head>
 <body>
-<header>
-  <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo" />
-  <h3>Office Beacon Training - ACORD 25 Interactive Quiz</h3>
-</header>
+  <header>
+    <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo" />
+    <h3>Office Beacon Training - ACORD 25 Interactive Quiz</h3>
+  </header>
 
-<h1 id="qTitle"></h1>
-<p id="qText"></p>
+  <h1 id="qTitle"></h1>
+  <p id="qText"></p>
 
-<div class="quiz">
-  <img id="qImage" src="" alt="ACORD Form">
-  <div id="options"></div>
-</div>
+  <div class="quiz">
+    <img id="qImage" src="" alt="ACORD Form">
+    <div id="options"></div>
+  </div>
 
-<div id="feedback"></div>
+  <div id="feedback"></div>
 
-<div id="end">
-  <h2>Activity Complete!</h2>
-  <p>Your total score: <span id="score">0</span>/10</p>
-  <!-- ✅ Pass Activity 1 score to Activity 2 -->
-  <a class="next" id="nextActivityBtn" href="https://script.google.com/macros/s/AKfycbzA178GCCVWV84kd5rEjnzdaU8knSG9MvlndsZVApslylbVUn5KJ3191vGZpsFgE_-t/exec">➡️ Proceed to the Next Activity</a>
-</div>
+  <div id="end">
+    <h2>Activity Complete!</h2>
+    <p>Your total score: <span id="score">0</span>/10</p>
+    <!-- ✅ This will now pass the score dynamically -->
+    <a class="next" id="nextBtn">➡️ Proceed to the Next Activity</a>
+  </div>
 
 <script>
-const questions = [ /* your existing questions array */ ];
+const questions = [
+  {
+    title: "Question 1",
+    text: "Where are you going to indicate the <strong>date you created your COI?</strong>",
+    image: "https://i.imgur.com/9QIBiUp.jpeg",
+    options: [
+      { top: 30, left: 515, correct: true },
+      { top: 150, left: 90, correct: false },
+      { top: 230, left: 90, correct: false }
+    ]
+  },
+  {
+    title: "Question 2",
+    text: "Look at the details below and select which part of the ACORD should contain them:<br><strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>",
+    image: "https://i.imgur.com/9QIBiUp.jpeg",
+    options: [
+      { top: 150, left: 90, correct: true },
+      { top: 230, left: 90, correct: false },
+      { top: 145, left: 400, correct: false }
+    ]
+  },
+  {
+    title: "Question 3",
+    text: "Where are you going to put the <strong>information of the contact person?</strong>",
+    image: "https://i.imgur.com/9QIBiUp.jpeg",
+    options: [
+      { top: 128, left: 400, correct: true },
+      { top: 30, left: 510, correct: false },
+      { top: 200, left: 400, correct: false }
+    ]
+  },
+  {
+    title: "Question 4",
+    text: "Where are you going to put this information?<br><strong>Jane Doe<br>1412 Tabacuhan St. San Diego, CA 90018<br>806-546-4399</strong>",
+    image: "https://i.imgur.com/9QIBiUp.jpeg",
+    options: [
+      { top: 225, left: 90, correct: true },
+      { top: 150, left: 90, correct: false },
+      { top: 200, left: 500, correct: false }
+    ]
+  },
+  {
+    title: "Question 5",
+    text: "Which section displays <strong>the type of coverage</strong> this certificate represents?",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [
+      { top: 70, left: 80, correct: true },
+      { top: 120, left: 360, correct: false },
+      { top: 230, left: 520, correct: false }
+    ]
+  },
+  {
+    title: "Question 6",
+    text: "Where should you enter this detail: <strong>0B2AA5688</strong>?",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [
+      { top: 120, left: 258, correct: true },
+      { top: 170, left: 555, correct: false },
+      { top: 280, left: 410, correct: false }
+    ]
+  },
+  {
+    title: "Question 7",
+    text: "Where will you input these details?<br><strong>Each Occurrence: $500,000<br>Med. Expense: $100,000<br>Personal & ADV Injury: $150,000</strong>",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [
+      { top: 120, left: 560, correct: true },
+      { top: 120, left: 360, correct: false },
+      { top: 155, left: 150, correct: false }
+    ]
+  },
+  {
+    title: "Question 8",
+    text: "Where should you place the phrase:<br><strong>The Certificate Holder is named as an Additional Insured with respect to the General Liability per written contract.</strong>",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [
+      { top: 400, left: 80, correct: true },
+      { top: 265, left: 350, correct: false },
+      { top: 75, left: 80, correct: false }
+    ]
+  },
+  {
+    title: "Question 9",
+    text: "Where should you enter this policy period?<br><strong>Period: 02/05/2025 - 02/05/2026</strong>",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [
+      { top: 125, left: 360, correct: true },
+      { top: 170, left: 555, correct: false },
+      { top: 158, left: 250, correct: false }
+    ]
+  },
+  {
+    title: "Question 10",
+    text: "Where should you record the details of the <strong>Additional Insured</strong>?",
+    image: "https://i.imgur.com/YPwppvo.jpeg",
+    options: [
+      { top: 500, left: 80, correct: true },
+      { top: 260, left: 400, correct: false },
+      { top: 230, left: 550, correct: false }
+    ]
+  }
+];
 
 let current = 0;
 let score = 0;
@@ -139,6 +273,7 @@ function loadQuestion() {
   qImage.src = q.image;
   feedback.textContent = "";
   optionsDiv.innerHTML = "";
+
   q.options.forEach(opt => {
     const btn = document.createElement("div");
     btn.classList.add("option");
@@ -151,13 +286,23 @@ function loadQuestion() {
 
 function checkAnswer(btn, isCorrect) {
   document.querySelectorAll(".option").forEach(b => b.classList.add("disabled"));
-  if (isCorrect) { feedback.textContent = "✅ Correct!"; feedback.className = "correct"; score++; }
-  else { feedback.textContent = "❌ Oops, wrong answer!"; feedback.className = "wrong"; }
+
+  if (isCorrect) {
+    feedback.textContent = "✅ Correct!";
+    feedback.className = "correct";
+    score++;
+  } else {
+    feedback.textContent = "❌ Oops, wrong answer!";
+    feedback.className = "wrong";
+  }
 
   setTimeout(() => {
     current++;
-    if (current < questions.length) loadQuestion();
-    else showEnd();
+    if (current < questions.length) {
+      loadQuestion();
+    } else {
+      showEnd();
+    }
   }, 1500);
 }
 
@@ -166,12 +311,18 @@ function showEnd() {
   feedback.style.display = "none";
   end.style.display = "block";
   scoreEl.textContent = score;
-
-  // ✅ Minimal change: add query string with score for Activity 2
-  document.getElementById("nextActivityBtn").href = "activity2.html?quizScore=" + score;
 }
 
 loadQuestion();
+
+// ✅ NEW ADDITION: Pass score to Activity 2
+document.getElementById("nextBtn").addEventListener("click", () => {
+  const quizScore = score * 10; // Convert to 100 scale
+  const name = localStorage.getItem("userName") || "Trainee";
+  const email = localStorage.getItem("userEmail") || "";
+  const nextURL = `https://script.google.com/macros/s/AKfycbzA178GCCVWV84kd5rEjnzdaU8knSG9MvlndsZVApslylbVUn5KJ3191vGZpsFgE_-t/exec?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&quizScore=${quizScore}`;
+  window.location.href = nextURL;
+});
 </script>
 </body>
 </html>
