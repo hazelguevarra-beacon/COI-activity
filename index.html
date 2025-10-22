@@ -311,6 +311,9 @@ function showEnd() {
   feedback.style.display = "none";
   end.style.display = "block";
   scoreEl.textContent = score;
+
+  // ✅ Save score for Activity 2
+  localStorage.setItem("activity1Score", score);
 }
 
 loadQuestion();
