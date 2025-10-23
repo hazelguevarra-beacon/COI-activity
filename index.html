@@ -1,186 +1,145 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Office Beacon Training - ACORD 25 Interactive Quiz</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activity 1 - OB Training</title>
   <style>
-    :root { --navy:#002b5b; --gold:#ffcc00; --ok:#2ea44f; --bad:#d9534f; }
     body {
       font-family: "Segoe UI", sans-serif;
-      margin: 0; display:flex; flex-direction:column; align-items:center;
-      min-height:100vh;
-      background: linear-gradient(135deg, #002b5b 0%, #0056b3 40%, #ffcc00 100%);
-      color: var(--navy);
-      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background-color: #f5f8fa;
+      background-image: url("https://i.imgur.com/d2BCvGL.png");
+      background-repeat: repeat;
+      background-size: 180px;
+      opacity: 0.95;
     }
-    body::before {
-      content:""; position:fixed; inset:0; background:rgba(255,255,255,0.35);
-      backdrop-filter: blur(2px); z-index:-1;
+    header {
+      background-color: rgba(0, 43, 91, 0.9);
+      color: white;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
-    header { background: rgba(0,43,91,0.9); color:white; width:100%;
-      display:flex; gap:12px; align-items:center; padding:10px 20px; box-shadow:0 4px 10px rgba(0,0,0,0.2);
+    header img { height: 45px; }
+    h1 { font-size: 22px; margin: 0; }
+    main {
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    header img { height:45px; }
-    header h3 { margin:0; font-weight:600; font-size:1.05rem; }
-    main { width:90%; max-width:800px; margin-top:20px; }
-    .intro { background:rgba(255,255,255,0.9); padding:16px; border-radius:10px; }
-    label { display:block; margin-top:8px; font-weight:600; }
-    input[type="text"]{ padding:8px; width:100%; border-radius:6px; border:1px solid #ccc; }
-    .quiz { margin-top:16px; display:flex; flex-direction:column; align-items:center; }
-    .quiz img { width:650px; display:block; border-radius:6px; }
-    .option { position:absolute; width:25px; height:25px; background:url("https://i.imgur.com/goJQm2I.png") no-repeat center/contain; cursor:pointer; transition:transform .2s; }
-    .option:hover { transform:scale(1.2); }
-    .disabled { pointer-events:none; opacity:0.7; }
-    #feedback { font-size:1.1rem; font-weight:700; margin-top:12px; text-align:center;}
-    #end { display:none; text-align:center; margin-top:20px; background: rgba(255,255,255,0.9); padding:20px; border-radius:10px; }
-    a.next { background:var(--navy); color:white; padding:10px 20px; border-radius:8px; text-decoration:none; }
+    input, button {
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      max-width: 300px;
+    }
+    button {
+      background-color: #002b5b;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+    button:hover { background-color: #004a9f; }
+    #result {
+      font-weight: bold;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
   <header>
-    <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo" />
-    <h3>Office Beacon Training - ACORD 25 Interactive Quiz</h3>
+    <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo">
+    <h1>Office Beacon Training - Activity 1</h1>
   </header>
 
   <main>
-    <div class="intro">
-      <label for="traineeName">Enter your full name to begin:</label>
-      <input id="traineeName" type="text" placeholder="e.g. Jane Doe" autofocus />
-      <p style="margin-top:8px; color:#333; font-size:0.95rem;">
-        Complete the 10-question interactive ACORD 25 quiz. When finished you will be redirected to the next activity.
-      </p>
-    </div>
+    <h2>Knowledge Quiz</h2>
+    <form id="quizForm">
+      <label for="name">Your Name:</label><br>
+      <input type="text" id="name" name="name" required><br><br>
 
-    <h1 id="qTitle"></h1>
-    <p id="qText"></p>
+      <!-- Example question layout (replace with your working version’s questions) -->
+      <div id="questions"></div>
 
-    <div class="quiz">
-      <div style="position:relative;">
-        <img id="qImage" src="" alt="ACORD Form" />
-        <div id="options" style="position:absolute; inset:0;"></div>
-      </div>
-    </div>
+      <button type="submit">Submit Activity 1</button>
+    </form>
 
-    <div id="feedback"></div>
+    <div id="result"></div>
 
-    <div id="end">
-      <h2>Activity Complete!</h2>
-      <p>Your total score: <span id="score">0</span>/10</p>
-      <p style="font-size:0.95rem;">Click the button below to proceed to the next activity.</p>
-      <a id="proceedBtn" class="next" href="#">➡️ Proceed to the Next Activity</a>
-    </div>
+    <button id="nextActivityBtn" style="display:none;">Proceed to Next Activity</button>
   </main>
 
-<script>
-/* -------------------------
-  Quiz questions (your existing data)
-   - I left your question objects and positions intact.
-----------------------------*/
-const questions = [
-  { title:"Question 1", text:"Where are you going to indicate the <strong>date you created your COI?</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
-    options:[ {top:30,left:515,correct:true},{top:150,left:90,correct:false},{top:230,left:90,correct:false} ]
-  },
-  { title:"Question 2", text:"Look at the details below and select which part of the ACORD should contain them:<br><strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
-    options:[ {top:150,left:90,correct:true},{top:230,left:90,correct:false},{top:145,left:400,correct:false} ]
-  },
-  { title:"Question 3", text:"Where are you going to put the <strong>information of the contact person?</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
-    options:[ {top:128,left:400,correct:true},{top:30,left:510,correct:false},{top:200,left:400,correct:false} ]
-  },
-  { title:"Question 4", text:"Where are you going to put this information?<br><strong>Jane Doe<br>1412 Tabacuhan St. San Diego, CA 90018<br>806-546-4399</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
-    options:[ {top:225,left:90,correct:true},{top:150,left:90,correct:false},{top:200,left:500,correct:false} ]
-  },
-  { title:"Question 5", text:"Which section displays <strong>the type of coverage</strong> this certificate represents?", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:70,left:80,correct:true},{top:120,left:360,correct:false},{top:230,left:520,correct:false} ]
-  },
-  { title:"Question 6", text:"Where should you enter this detail: <strong>0B2AA5688</strong>?", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:120,left:258,correct:true},{top:170,left:555,correct:false},{top:280,left:410,correct:false} ]
-  },
-  { title:"Question 7", text:"Where will you input these details?<br><strong>Each Occurrence: $500,000<br>Med. Expense: $100,000<br>Personal & ADV Injury: $150,000</strong>", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:120,left:560,correct:true},{top:120,left:360,correct:false},{top:155,left:150,correct:false} ]
-  },
-  { title:"Question 8", text:"Where should you place the phrase:<br><strong>The Certificate Holder is named as an Additional Insured with respect to the General Liability per written contract.</strong>", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:400,left:80,correct:true},{top:265,left:350,correct:false},{top:75,left:80,correct:false} ]
-  },
-  { title:"Question 9", text:"Where should you enter this policy period?<br><strong>Period: 02/05/2025 - 02/05/2026</strong>", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:125,left:360,correct:true},{top:170,left:555,correct:false},{top:158,left:250,correct:false} ]
-  },
-  { title:"Question 10", text:"Where should you record the details of the <strong>Additional Insured</strong>?", image:"https://i.imgur.com/YPwppvo.jpeg",
-    options:[ {top:500,left:80,correct:true},{top:260,left:400,correct:false},{top:230,left:550,correct:false} ]
-  }
-];
+  <script>
+    // Example questions (use your own full list from your working Activity 1)
+    const questions = [
+      {q:"What does COI stand for?", a:"Certificate of Insurance"},
+      {q:"Who issues an ACORD 25 form?", a:"Insurance Agent"},
+    ];
 
-let current = 0;
-let score = 0;
+    const qContainer = document.getElementById("questions");
+    questions.forEach((q, i) => {
+      const div = document.createElement("div");
+      div.innerHTML = `
+        <label>${i+1}. ${q.q}</label><br>
+        <input type="text" id="q${i}" required><br><br>
+      `;
+      qContainer.appendChild(div);
+    });
 
-const qTitle = document.getElementById("qTitle");
-const qText = document.getElementById("qText");
-const qImage = document.getElementById("qImage");
-const optionsDiv = document.getElementById("options");
-const feedback = document.getElementById("feedback");
-const end = document.getElementById("end");
-const scoreEl = document.getElementById("score");
+    document.getElementById("quizForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      if (!name) { alert("Please enter your name."); return; }
 
-function loadQuestion() {
-  const q = questions[current];
-  qTitle.textContent = q.title;
-  qText.innerHTML = q.text;
-  qImage.src = q.image;
-  feedback.textContent = "";
-  optionsDiv.innerHTML = "";
-  q.options.forEach(opt => {
-    const btn = document.createElement("div");
-    btn.classList.add("option");
-    btn.style.top = opt.top + "px";
-    btn.style.left = opt.left + "px";
-    btn.onclick = () => checkAnswer(btn, opt.correct);
-    optionsDiv.appendChild(btn);
-  });
-}
+      let score = 0;
+      questions.forEach((q, i) => {
+        const ans = document.getElementById("q"+i).value.trim().toLowerCase();
+        if (ans === q.a.toLowerCase()) score += 50; // adjust per question
+      });
 
-function checkAnswer(btn, isCorrect) {
-  document.querySelectorAll(".option").forEach(b => b.classList.add("disabled"));
-  if (isCorrect) {
-    feedback.textContent = "✅ Correct!";
-    feedback.className = "correct";
-    score++;
-  } else {
-    feedback.textContent = "❌ Oops, wrong answer!";
-    feedback.className = "wrong";
-  }
-  setTimeout(()=> {
-    current++;
-    if (current < questions.length) loadQuestion();
-    else showEnd();
-  }, 1200);
-}
+      document.getElementById("result").innerHTML =
+        `✅ ${name}, your Activity 1 score is <b>${score}</b>.`;
 
-function showEnd() {
-  document.querySelector(".quiz").style.display = "none";
-  feedback.style.display = "none";
-  end.style.display = "block";
-  scoreEl.textContent = score;
-  // Build proceed link with name and score
-  const name = document.getElementById('traineeName').value.trim();
-  if (!name) {
-    // force user to enter name
-    alert("Please enter your full name before proceeding.");
-    end.style.display = "none";
-    document.querySelector(".quiz").style.display = "block";
-    feedback.style.display = "block";
-    return;
-  }
-  // Replace NEXT_URL with your deployed Apps Script web app URL
-  const NEXT_URL = "https://script.google.com/macros/s/AKfycbyYFIBz0gKGBAuX9wVDwbHljedTtyG1c-wtncQYJR9d9U7iASrRizR_ol6kpr6go_jA/exec";
-  const params = new URLSearchParams({
-    name: name,
-    scoreA1: Math.round((score / questions.length) * 100) // convert to percent (0-100)
-  });
-  const target = NEXT_URL + "?" + params.toString();
-  document.getElementById("proceedBtn").href = target;
-}
+      // Save to Activity Score sheet
+      google.script.run.withSuccessHandler(() => {
+        console.log("Score saved successfully.");
+      }).saveActivity1(name, score);
 
-loadQuestion();
-</script>
+      // Show proceed button
+      document.getElementById("nextActivityBtn").style.display = "inline-block";
+
+      // Save to localStorage for Activity 2
+      localStorage.setItem("name", name);
+      localStorage.setItem("scoreA1", score);
+    });
+
+    // === Redirect to Activity 2 ===
+    function goToActivity2(name, scoreA1) {
+      localStorage.setItem("name", name);
+      localStorage.setItem("scoreA1", scoreA1);
+
+      // Replace this after you deploy Activity 2
+      const ACTIVITY_2_URL = "https://script.google.com/macros/s/AKfycbyYFIBz0gKGBAuX9wVDwbHljedTtyG1c-wtncQYJR9d9U7iASrRizR_ol6kpr6go_jA/exec";
+
+      const target = `${ACTIVITY_2_URL}?name=${encodeURIComponent(name)}&scoreA1=${encodeURIComponent(scoreA1)}`;
+      window.location.href = target;
+    }
+
+    document.getElementById("nextActivityBtn").addEventListener("click", function(){
+      const name = localStorage.getItem("name");
+      const score = localStorage.getItem("scoreA1");
+      goToActivity2(name, score);
+    });
+  </script>
 </body>
 </html>
