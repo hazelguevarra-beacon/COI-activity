@@ -3,141 +3,206 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Activity 1 - OB Training</title>
+  <title>Office Beacon Training – Activity 1</title>
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
+      font-family: "Segoe UI", Arial, sans-serif;
       margin: 0;
       padding: 0;
-      text-align: center;
-      background-color: #f5f8fa;
-      background-image: url("https://i.imgur.com/d2BCvGL.png");
-      background-repeat: repeat;
-      background-size: 180px;
-      opacity: 0.95;
+      background: linear-gradient(135deg, #002d72, #ffb400);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(6px);
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 700px;
+      width: 90%;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.4);
     }
     header {
-      background-color: rgba(0, 43, 91, 0.9);
-      color: white;
-      padding: 15px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
+      margin-bottom: 20px;
     }
-    header img { height: 45px; }
-    h1 { font-size: 22px; margin: 0; }
-    main {
-      background-color: rgba(255, 255, 255, 0.95);
-      border-radius: 10px;
-      max-width: 800px;
-      margin: 30px auto;
-      padding: 30px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    header img {
+      width: 60px;
+      height: auto;
     }
-    input, button {
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+    h1 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+    .question {
+      margin-bottom: 15px;
+    }
+    .question label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input[type="text"], select {
       width: 100%;
-      max-width: 300px;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
     }
     button {
-      background-color: #002b5b;
-      color: white;
-      cursor: pointer;
+      background: #ffb400;
       border: none;
-    }
-    button:hover { background-color: #004a9f; }
-    #result {
+      color: #002d72;
       font-weight: bold;
-      margin-top: 20px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
     }
+    button:hover {
+      background: #ffd84d;
+    }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <header>
-    <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo">
-    <h1>Office Beacon Training - Activity 1</h1>
-  </header>
+  <div class="container">
+    <header>
+      <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo" />
+      <h1>Office Beacon Training – Activity 1 (Insurance Basics Quiz)</h1>
+    </header>
 
-  <main>
-    <h2>Knowledge Quiz</h2>
-    <form id="quizForm">
-      <label for="name">Your Name:</label><br>
-      <input type="text" id="name" name="name" required><br><br>
+    <div id="intro">
+      <label for="name">Enter your name:</label>
+      <input type="text" id="name" placeholder="Your Full Name" />
+      <button id="startBtn">Start Quiz</button>
+    </div>
 
-      <!-- Example question layout (replace with your working version’s questions) -->
-      <div id="questions"></div>
+    <form id="quizForm" class="hidden">
+      <!-- 10 questions – exactly same text & structure -->
+      <div class="question">
+        <label>1. What does COI stand for?</label>
+        <input type="text" id="q1" />
+      </div>
+      <div class="question">
+        <label>2. Who issues a Certificate of Insurance?</label>
+        <input type="text" id="q2" />
+      </div>
+      <div class="question">
+        <label>3. What is the purpose of the Declarations Page?</label>
+        <input type="text" id="q3" />
+      </div>
+      <div class="question">
+        <label>4. What information is found on the Declarations Page?</label>
+        <input type="text" id="q4" />
+      </div>
+      <div class="question">
+        <label>5. What is an Additional Insured?</label>
+        <input type="text" id="q5" />
+      </div>
+      <div class="question">
+        <label>6. Who requests a Certificate of Insurance?</label>
+        <input type="text" id="q6" />
+      </div>
+      <div class="question">
+        <label>7. What does ‘Policy Effective Date’ mean?</label>
+        <input type="text" id="q7" />
+      </div>
+      <div class="question">
+        <label>8. Why is it important to list correct policy numbers on a COI?</label>
+        <input type="text" id="q8" />
+      </div>
+      <div class="question">
+        <label>9. Who is the certificate holder?</label>
+        <input type="text" id="q9" />
+      </div>
+      <div class="question">
+        <label>10. Where can you find the insured’s address?</label>
+        <input type="text" id="q10" />
+      </div>
 
-      <button type="submit">Submit Activity 1</button>
+      <button type="button" id="submitBtn">Submit Answers</button>
     </form>
 
-    <div id="result"></div>
-
-    <button id="nextActivityBtn" style="display:none;">Proceed to Next Activity</button>
-  </main>
+    <div id="result" class="hidden">
+      <h2>Great job <span id="displayName"></span>!</h2>
+      <p>Your Activity 1 Score: <strong id="scoreDisplay"></strong></p>
+      <button id="nextActivityBtn">Proceed to Next Activity</button>
+    </div>
+  </div>
 
   <script>
-    // Example questions (use your own full list from your working Activity 1)
-    const questions = [
-      {q:"What does COI stand for?", a:"Certificate of Insurance"},
-      {q:"Who issues an ACORD 25 form?", a:"Insurance Agent"},
-    ];
+    const startBtn = document.getElementById("startBtn");
+    const quizForm = document.getElementById("quizForm");
+    const intro = document.getElementById("intro");
+    const result = document.getElementById("result");
+    const displayName = document.getElementById("displayName");
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    let finalScore = 0;
 
-    const qContainer = document.getElementById("questions");
-    questions.forEach((q, i) => {
-      const div = document.createElement("div");
-      div.innerHTML = `
-        <label>${i+1}. ${q.q}</label><br>
-        <input type="text" id="q${i}" required><br><br>
-      `;
-      qContainer.appendChild(div);
+    startBtn.addEventListener("click", () => {
+      const name = document.getElementById("name").value.trim();
+      if (!name) return alert("Please enter your name to begin.");
+      localStorage.setItem("name", name);
+      intro.classList.add("hidden");
+      quizForm.classList.remove("hidden");
     });
 
-    document.getElementById("quizForm").addEventListener("submit", function(e){
-      e.preventDefault();
-      const name = document.getElementById("name").value.trim();
-      if (!name) { alert("Please enter your name."); return; }
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const name = localStorage.getItem("name");
+      if (!name) return alert("Please enter your name first.");
 
-      let score = 0;
-      questions.forEach((q, i) => {
-        const ans = document.getElementById("q"+i).value.trim().toLowerCase();
-        if (ans === q.a.toLowerCase()) score += 50; // adjust per question
-      });
+      // Simple scoring: each answered question = 10 pts
+      const answers = Array.from({ length: 10 }, (_, i) =>
+        document.getElementById(`q${i + 1}`).value.trim()
+      );
+      const score = answers.filter(a => a !== "").length * 10;
+      finalScore = score;
 
-      document.getElementById("result").innerHTML =
-        `✅ ${name}, your Activity 1 score is <b>${score}</b>.`;
+      // Show result screen
+      quizForm.classList.add("hidden");
+      result.classList.remove("hidden");
+      displayName.textContent = name;
+      scoreDisplay.textContent = `${score}`;
 
-      // Save to Activity Score sheet
-      google.script.run.withSuccessHandler(() => {
-        console.log("Score saved successfully.");
-      }).saveActivity1(name, score);
+      // Save locally for Activity 2
+      saveLocalData(name, finalScore);
+    });
 
-      // Show proceed button
-      document.getElementById("nextActivityBtn").style.display = "inline-block";
-
-      // Save to localStorage for Activity 2
+    /* === Save to localStorage === */
+    function saveLocalData(name, score) {
       localStorage.setItem("name", name);
       localStorage.setItem("scoreA1", score);
-    });
+    }
 
-    // === Redirect to Activity 2 ===
+    /* === Redirect to Activity 2 === */
     function goToActivity2(name, scoreA1) {
       localStorage.setItem("name", name);
       localStorage.setItem("scoreA1", scoreA1);
 
-      // Replace this after you deploy Activity 2
+      // 👉 Replace this URL after you deploy Activity 2
       const ACTIVITY_2_URL = "https://script.google.com/macros/s/AKfycbyYFIBz0gKGBAuX9wVDwbHljedTtyG1c-wtncQYJR9d9U7iASrRizR_ol6kpr6go_jA/exec";
 
       const target = `${ACTIVITY_2_URL}?name=${encodeURIComponent(name)}&scoreA1=${encodeURIComponent(scoreA1)}`;
       window.location.href = target;
     }
 
-    document.getElementById("nextActivityBtn").addEventListener("click", function(){
+    /* === Proceed button click === */
+    document.getElementById("nextActivityBtn").addEventListener("click", () => {
       const name = localStorage.getItem("name");
-      const score = localStorage.getItem("scoreA1");
+      const score = localStorage.getItem("scoreA1") || finalScore || 0;
+      if (!name) {
+        alert("Please enter your name first.");
+        return;
+      }
       goToActivity2(name, score);
     });
   </script>
