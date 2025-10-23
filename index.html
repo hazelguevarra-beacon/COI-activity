@@ -1,210 +1,187 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Office Beacon Training – Activity 1</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Office Beacon Training - ACORD 25 Interactive Quiz</title>
   <style>
+    :root { --navy:#002b5b; --gold:#ffcc00; --ok:#2ea44f; --bad:#d9534f; }
     body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #002d72, #ffb400);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: "Segoe UI", sans-serif;
+      margin: 0; display:flex; flex-direction:column; align-items:center;
+      min-height:100vh;
+      background: linear-gradient(135deg, #002b5b 0%, #0056b3 40%, #ffcc00 100%);
+      color: var(--navy);
+      background-attachment: fixed;
     }
-    .container {
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(6px);
-      border-radius: 16px;
-      padding: 40px;
-      max-width: 700px;
-      width: 90%;
-      box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+    body::before {
+      content:""; position:fixed; inset:0; background:rgba(255,255,255,0.35);
+      backdrop-filter: blur(2px); z-index:-1;
     }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
+    header { background: rgba(0,43,91,0.9); color:white; width:100%;
+      display:flex; gap:12px; align-items:center; padding:10px 20px; box-shadow:0 4px 10px rgba(0,0,0,0.2);
     }
-    header img {
-      width: 60px;
-      height: auto;
-    }
-    h1 {
-      margin: 0;
-      font-size: 1.4rem;
-    }
-    .question {
-      margin-bottom: 15px;
-    }
-    .question label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-    input[type="text"], select {
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      border: none;
-      outline: none;
-      font-size: 1rem;
-    }
-    button {
-      background: #ffb400;
-      border: none;
-      color: #002d72;
-      font-weight: bold;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-      margin-top: 10px;
-    }
-    button:hover {
-      background: #ffd84d;
-    }
-    .hidden { display: none; }
+    header img { height:45px; }
+    header h3 { margin:0; font-weight:600; font-size:1.05rem; }
+    main { width:90%; max-width:800px; margin-top:20px; }
+    .intro { background:rgba(255,255,255,0.9); padding:16px; border-radius:10px; }
+    label { display:block; margin-top:8px; font-weight:600; }
+    input[type="text"]{ padding:8px; width:100%; border-radius:6px; border:1px solid #ccc; }
+    .quiz { margin-top:16px; display:flex; flex-direction:column; align-items:center; }
+    .quiz img { width:650px; display:block; border-radius:6px; }
+    .option { position:absolute; width:25px; height:25px; background:url("https://i.imgur.com/goJQm2I.png") no-repeat center/contain; cursor:pointer; transition:transform .2s; }
+    .option:hover { transform:scale(1.2); }
+    .disabled { pointer-events:none; opacity:0.7; }
+    #feedback { font-size:1.1rem; font-weight:700; margin-top:12px; text-align:center;}
+    #end { display:none; text-align:center; margin-top:20px; background: rgba(255,255,255,0.9); padding:20px; border-radius:10px; }
+    a.next { background:var(--navy); color:white; padding:10px 20px; border-radius:8px; text-decoration:none; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo" />
-      <h1>Office Beacon Training – Activity 1 (Insurance Basics Quiz)</h1>
-    </header>
+  <header>
+    <img src="https://i.imgur.com/d2BCvGL.png" alt="Office Beacon Logo" />
+    <h3>Office Beacon Training - ACORD 25 Interactive Quiz</h3>
+  </header>
 
-    <div id="intro">
-      <label for="name">Enter your name:</label>
-      <input type="text" id="name" placeholder="Your Full Name" />
-      <button id="startBtn">Start Quiz</button>
+  <main>
+    <div class="intro">
+      <label for="traineeName">Enter your full name to begin:</label>
+      <input id="traineeName" type="text" placeholder="e.g. Jane Doe" autofocus />
+      <p style="margin-top:8px; color:#333; font-size:0.95rem;">
+        Complete the 10-question interactive ACORD 25 quiz. When finished you will be redirected to the next activity.
+      </p>
     </div>
 
-    <form id="quizForm" class="hidden">
-      <!-- 10 questions – exactly same text & structure -->
-      <div class="question">
-        <label>1. What does COI stand for?</label>
-        <input type="text" id="q1" />
-      </div>
-      <div class="question">
-        <label>2. Who issues a Certificate of Insurance?</label>
-        <input type="text" id="q2" />
-      </div>
-      <div class="question">
-        <label>3. What is the purpose of the Declarations Page?</label>
-        <input type="text" id="q3" />
-      </div>
-      <div class="question">
-        <label>4. What information is found on the Declarations Page?</label>
-        <input type="text" id="q4" />
-      </div>
-      <div class="question">
-        <label>5. What is an Additional Insured?</label>
-        <input type="text" id="q5" />
-      </div>
-      <div class="question">
-        <label>6. Who requests a Certificate of Insurance?</label>
-        <input type="text" id="q6" />
-      </div>
-      <div class="question">
-        <label>7. What does ‘Policy Effective Date’ mean?</label>
-        <input type="text" id="q7" />
-      </div>
-      <div class="question">
-        <label>8. Why is it important to list correct policy numbers on a COI?</label>
-        <input type="text" id="q8" />
-      </div>
-      <div class="question">
-        <label>9. Who is the certificate holder?</label>
-        <input type="text" id="q9" />
-      </div>
-      <div class="question">
-        <label>10. Where can you find the insured’s address?</label>
-        <input type="text" id="q10" />
-      </div>
+    <h1 id="qTitle"></h1>
+    <p id="qText"></p>
 
-      <button type="button" id="submitBtn">Submit Answers</button>
-    </form>
-
-    <div id="result" class="hidden">
-      <h2>Great job <span id="displayName"></span>!</h2>
-      <p>Your Activity 1 Score: <strong id="scoreDisplay"></strong></p>
-      <button id="nextActivityBtn">Proceed to Next Activity</button>
+    <div class="quiz">
+      <div style="position:relative;">
+        <img id="qImage" src="" alt="ACORD Form" />
+        <div id="options" style="position:absolute; inset:0;"></div>
+      </div>
     </div>
-  </div>
 
-  <script>
-    const startBtn = document.getElementById("startBtn");
-    const quizForm = document.getElementById("quizForm");
-    const intro = document.getElementById("intro");
-    const result = document.getElementById("result");
-    const displayName = document.getElementById("displayName");
-    const scoreDisplay = document.getElementById("scoreDisplay");
-    let finalScore = 0;
+    <div id="feedback"></div>
 
-    startBtn.addEventListener("click", () => {
-      const name = document.getElementById("name").value.trim();
-      if (!name) return alert("Please enter your name to begin.");
-      localStorage.setItem("name", name);
-      intro.classList.add("hidden");
-      quizForm.classList.remove("hidden");
-    });
+    <div id="end">
+      <h2>Activity Complete!</h2>
+      <p>Your total score: <span id="score">0</span>/10</p>
+      <p style="font-size:0.95rem;">Click the button below to proceed to the next activity.</p>
+      <a id="proceedBtn" class="next" href="#">➡️ Proceed to the Next Activity</a>
+    </div>
+  </main>
 
-    document.getElementById("submitBtn").addEventListener("click", () => {
-      const name = localStorage.getItem("name");
-      if (!name) return alert("Please enter your name first.");
+<script>
+/* -------------------------
+  Quiz questions (exactly as you had them)
+----------------------------*/
+const questions = [
+  { title:"Question 1", text:"Where are you going to indicate the <strong>date you created your COI?</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
+    options:[ {top:30,left:515,correct:true},{top:150,left:90,correct:false},{top:230,left:90,correct:false} ]
+  },
+  { title:"Question 2", text:"Look at the details below and select which part of the ACORD should contain them:<br><strong>Training Agency<br>14587 Garden Dr. Lima, Ohio 45108</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
+    options:[ {top:150,left:90,correct:true},{top:230,left:90,correct:false},{top:145,left:400,correct:false} ]
+  },
+  { title:"Question 3", text:"Where are you going to put the <strong>information of the contact person?</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
+    options:[ {top:128,left:400,correct:true},{top:30,left:510,correct:false},{top:200,left:400,correct:false} ]
+  },
+  { title:"Question 4", text:"Where are you going to put this information?<br><strong>Jane Doe<br>1412 Tabacuhan St. San Diego, CA 90018<br>806-546-4399</strong>", image:"https://i.imgur.com/9QIBiUp.jpeg",
+    options:[ {top:225,left:90,correct:true},{top:150,left:90,correct:false},{top:200,left:500,correct:false} ]
+  },
+  { title:"Question 5", text:"Which section displays <strong>the type of coverage</strong> this certificate represents?", image:"https://i.imgur.com/YPwppvo.jpeg",
+    options:[ {top:70,left:80,correct:true},{top:120,left:360,correct:false},{top:230,left:520,correct:false} ]
+  },
+  { title:"Question 6", text:"Where should you enter this detail: <strong>0B2AA5688</strong>?", image:"https://i.imgur.com/YPwppvo.jpeg",
+    options:[ {top:120,left:258,correct:true},{top:170,left:555,correct:false},{top:280,left:410,correct:false} ]
+  },
+  { title:"Question 7", text:"Where will you input these details?<br><strong>Each Occurrence: $500,000<br>Med. Expense: $100,000<br>Personal & ADV Injury: $150,000</strong>", image:"https://i.imgur.com/YPwppvo.jpeg",
+    options:[ {top:120,left:560,correct:true},{top:120,left:360,correct:false},{top:155,left:150,correct:false} ]
+  },
+  { title:"Question 8", text:"Where should you place the phrase:<br><strong>The Certificate Holder is named as an Additional Insured with respect to the General Liability per written contract.</strong>", image:"https://i.imgur.com/YPwppvo.jpeg",
+    options:[ {top:400,left:80,correct:true},{top:265,left:350,correct:false},{top:75,left:80,correct:false} ]
+  },
+  { title:"Question 9", text:"Where should you enter this policy period?<br><strong>Period: 02/05/2025 - 02/05/2026</strong>", image:"https://i.imgur.com/YPwppvo.jpeg",
+    options:[ {top:125,left:360,correct:true},{top:170,left:555,correct:false},{top:158,left:250,correct:false} ]
+  },
+  { title:"Question 10", text:"Where should you record the details of the <strong>Additional Insured</strong>?", image:"https://i.imgur.com/YPwppvo.jpeg",
+    options:[ {top:500,left:80,correct:true},{top:260,left:400,correct:false},{top:230,left:550,correct:false} ]
+  }
+];
 
-      // Simple scoring: each answered question = 10 pts
-      const answers = Array.from({ length: 10 }, (_, i) =>
-        document.getElementById(`q${i + 1}`).value.trim()
-      );
-      const score = answers.filter(a => a !== "").length * 10;
-      finalScore = score;
+let current = 0;
+let score = 0;
 
-      // Show result screen
-      quizForm.classList.add("hidden");
-      result.classList.remove("hidden");
-      displayName.textContent = name;
-      scoreDisplay.textContent = `${score}`;
+const qTitle = document.getElementById("qTitle");
+const qText = document.getElementById("qText");
+const qImage = document.getElementById("qImage");
+const optionsDiv = document.getElementById("options");
+const feedback = document.getElementById("feedback");
+const end = document.getElementById("end");
+const scoreEl = document.getElementById("score");
 
-      // Save locally for Activity 2
-      saveLocalData(name, finalScore);
-    });
+function loadQuestion() {
+  const q = questions[current];
+  qTitle.textContent = q.title;
+  qText.innerHTML = q.text;
+  qImage.src = q.image;
+  feedback.textContent = "";
+  optionsDiv.innerHTML = "";
+  q.options.forEach(opt => {
+    const btn = document.createElement("div");
+    btn.classList.add("option");
+    btn.style.top = opt.top + "px";
+    btn.style.left = opt.left + "px";
+    btn.onclick = () => checkAnswer(btn, opt.correct);
+    optionsDiv.appendChild(btn);
+  });
+}
 
-    /* === Save to localStorage === */
-    function saveLocalData(name, score) {
-      localStorage.setItem("name", name);
-      localStorage.setItem("scoreA1", score);
-    }
+function checkAnswer(btn, isCorrect) {
+  document.querySelectorAll(".option").forEach(b => b.classList.add("disabled"));
+  if (isCorrect) {
+    feedback.textContent = "✅ Correct!";
+    score++;
+  } else {
+    feedback.textContent = "❌ Oops, wrong answer!";
+  }
+  setTimeout(()=> {
+    current++;
+    if (current < questions.length) loadQuestion();
+    else showEnd();
+  }, 1200);
+}
 
-    /* === Redirect to Activity 2 === */
-    function goToActivity2(name, scoreA1) {
-      localStorage.setItem("name", name);
-      localStorage.setItem("scoreA1", scoreA1);
+function showEnd() {
+  document.querySelector(".quiz").style.display = "none";
+  feedback.style.display = "none";
+  end.style.display = "block";
+  scoreEl.textContent = score;
 
-      // 👉 Replace this URL after you deploy Activity 2
-      const ACTIVITY_2_URL = "https://script.google.com/macros/s/AKfycbyYFIBz0gKGBAuX9wVDwbHljedTtyG1c-wtncQYJR9d9U7iASrRizR_ol6kpr6go_jA/exec";
+  const name = document.getElementById('traineeName').value.trim();
+  if (!name) {
+    alert("Please enter your full name before proceeding.");
+    end.style.display = "none";
+    document.querySelector(".quiz").style.display = "block";
+    feedback.style.display = "block";
+    return;
+  }
 
-      const target = `${ACTIVITY_2_URL}?name=${encodeURIComponent(name)}&scoreA1=${encodeURIComponent(scoreA1)}`;
-      window.location.href = target;
-    }
+  const scoreA1 = Math.round((score / questions.length) * 100);
 
-    /* === Proceed button click === */
-    document.getElementById("nextActivityBtn").addEventListener("click", () => {
-      const name = localStorage.getItem("name");
-      const score = localStorage.getItem("scoreA1") || finalScore || 0;
-      if (!name) {
-        alert("Please enter your name first.");
-        return;
-      }
-      goToActivity2(name, score);
-    });
-  </script>
+  // Save locally so Activity 2 can read them
+  localStorage.setItem("name", name);
+  localStorage.setItem("scoreA1", scoreA1);
+
+  // 🔗 Replace this with your Activity 2 web app URL
+  const NEXT_URL = "https://script.google.com/macros/s/AKfycbyYFIBz0gKGBAuX9wVDwbHljedTtyG1c-wtncQYJR9d9U7iASrRizR_ol6kpr6go_jA/exec";
+
+  const params = new URLSearchParams({ name, scoreA1 });
+  const target = `${NEXT_URL}?${params.toString()}`;
+  document.getElementById("proceedBtn").href = target;
+}
+
+loadQuestion();
+</script>
 </body>
 </html>
